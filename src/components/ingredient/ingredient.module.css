@@ -1,0 +1,29 @@
+.ingreient{
+    width: 272px;
+    min-height: 208px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  
+  .image{
+    width: 240px;
+    height: 120px;
+    object-fit: contain;
+    object-position: center;
+  }
+  
+  .prise{
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .priseText{
+    color: #f2f2f3;
+  }
+  
+  .description{
+    color: #f2f2f3;
+    text-align: center;
+  }
