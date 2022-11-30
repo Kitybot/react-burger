@@ -1,0 +1,47 @@
+.ingredients{
+    width: 600px;
+    height: calc(100vh - 128px);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .title{
+    color: #f2f2f3;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+  
+  .tabs{
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+  
+  .links{
+    text-decoration: none;
+  }
+  
+  .listsIngredients {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow-y: scroll;
+      scrollbar-color: #2F2F37 #8585AD;
+      scrollbar-width: thin;
+    scroll-behavior: smooth;
+  }
+  
+  .listsIngredients::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .listsIngredients::-webkit-scrollbar-track {
+    background: #2F2F37;
+    margin-bottom: 92px;
+  }
+  
+  .listsIngredients::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+  }

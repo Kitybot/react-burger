@@ -1,0 +1,25 @@
+.link{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 56px;
+    background-color: inherit;
+    border: none;
+    text-decoration: none;
+  }
+  
+  .link:last-child{
+    margin-left: 8px;
+  }
+  
+  .active{
+    color: #f2f2f3;
+  }
+  
+  .inactive {
+    color: #8585ad;
+  }
+  
+  .link:hover .inactive{
+    color: #f2f2f3;
+  }

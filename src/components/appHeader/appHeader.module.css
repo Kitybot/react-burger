@@ -1,0 +1,26 @@
+.header{
+    background-color: #1C1C21;
+    width: 100%;
+    max-width: 1920px;
+    min-width: 1280px;
+    box-sizing: border-box;
+    min-height: 88px;
+    display: flex;
+    align-items: center;
+    padding: 0 320px;
+  }
+  
+  @media screen and (max-width: 1919px) {
+    .header{
+      padding: 0 calc(320px - (960px - 50%));
+    }
+  }
+  
+  .navigation{
+    display: flex;
+    margin-right: 112px;
+  }
+  
+  .accountLink{
+    margin-left: 281px;
+  }
