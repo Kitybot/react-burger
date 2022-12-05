@@ -1,5 +1,5 @@
 import React from "react";
-import data from '../../utils/data';
+import data from '../../utils/types';
 import styles from './burgerIngredients.module.css';
 import PropTypes from 'prop-types';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';

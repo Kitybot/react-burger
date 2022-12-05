@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './burgerConstructor.module.css';
 import PropTypes from 'prop-types';
-import data from "../../utils/data";
+import data from "../../utils/types";
 import { CurrencyIcon, Button, ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 export default function BurgerConstructor({order}) {
