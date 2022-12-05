@@ -1,26 +1,31 @@
 import React from "react";
 import styles from './burgerConstructor.module.css';
 import PropTypes from 'prop-types';
-import data from "../../utils/types";
 import { CurrencyIcon, Button, ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export default function BurgerConstructor({order}) {
 
-  const bun = data.find(item => {
-    return item._id === order.bun;
+let todoCounter = 0;
+function getNewTodo() {
+  todoCounter += 1;
+}
+function BurgerConstructor({bunOrder, othersOrder, ingredients, openModal}) {
+  
+  const openModalOrderDetails = () => {
+    openModal('orderDetails');
+  }
+  const bun = ingredients.find(item => {
+    return item._id === bunOrder;
   });
   const bunPrice = bun === undefined ? 0 : bun.price;
   
-  const othersIngredients = order.others.map((item) => {
-    return data.find( meal => {
+  const othersIngredients = othersOrder.map((item) => {
+    return ingredients.find( meal => {
       return meal._id === item;
     });
   });
-
   const price = bunPrice * 2 + othersIngredients.reduce(function(previousValue, item) {
     return previousValue + item.price;
   }, 0);
-
   return (
     <section className={`pl-4 pt-25 pb-3 ${styles.order}`}>
       <ul className={styles.orderStructure}>
@@ -29,7 +34,8 @@ export default function BurgerConstructor({order}) {
         </li>
         <ul className={`${othersIngredients.length !== 0 && "mt-4 mb-4 pr-4"} ${styles.othersIngredients}`}>
           {othersIngredients.map((item, index) => {
-            return (<li className={`pl-4 ${styles.otherIngredient}`} key={index}>
+            getNewTodo();
+            return (<li className={`pl-4 ${styles.otherIngredient}`} key={todoCounter}>
                       <DragIcon type="primary" />
                       <ConstructorElement text={item.name} thumbnail={item.image} price={item.price}/>
                     </li>)
@@ -44,15 +50,28 @@ export default function BurgerConstructor({order}) {
           <p className="text text_type_digits-medium mr-2">{price}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large">Оформить заказ</Button>
+        <Button type="primary" size="large" onClick={openModalOrderDetails}>Оформить заказ</Button>
       </div>
     </section>
   )
 }
-
 BurgerConstructor.propTypes = {
-  order: PropTypes.shape({
-    bun: PropTypes.string,
-    others: PropTypes.arrayOf(PropTypes.string)
-  })
+  bunOrder: PropTypes.string.isRequired,
+  othersOrder: PropTypes.arrayOf(PropTypes.string).isRequired,
+  ingredients: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    type: PropTypes.string,
+    proteins: PropTypes.number,
+    fat: PropTypes.number,
+    carbohydrates: PropTypes.number,
+    calories: PropTypes.number,
+    price: PropTypes.number,
+    image: PropTypes.string,
+    image_mobile: PropTypes.string,
+    image_large: PropTypes.string,
+    __v: PropTypes.number
+  })),
+  openModal: PropTypes.func.isRequired
 }
+export default BurgerConstructor;
