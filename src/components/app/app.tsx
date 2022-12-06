@@ -4,6 +4,9 @@ import AppHeader from '../appHeader/appHeader';
 import BurgerIngredients from '../burgerIngredients/burgerIngredients';
 import BurgerConstructor from '../burgerConstructor/burgerConstructor';
 import {urlGetIngredients} from '../../utils/utils';
+import Modal from '../modal/modal';
+import OrderDetails from '../orderDetails/orderDetails';
+import IngredientDetails from '../ingredientDetalis/ingredientDetalis';
 import ErrorMessage from '../errorMassege/errorMassege';
 
 
