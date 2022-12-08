@@ -1,7 +1,8 @@
 import React from "react";
-import styles from './ingredient.module.css';
+import styles from '../ingredient/ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
+import {ingredientType} from '../../utils/types';
 
 function Ingredient({order, openModal, ingredient}) {
 
@@ -10,9 +11,11 @@ function Ingredient({order, openModal, ingredient}) {
       return ingredient.id === item ? previousValue += 1 : previousValue;
     }, 0
   )
+
   const openModalIngredientDetails = () => {
     openModal('ingredientDetails', ingredient);
   }
+
   return (
     <li className={styles.ingreient} id={ingredient.id} onClick={openModalIngredientDetails}>
       <img src={ingredient.image} alt={`Иконка ${ingredient.name}`} className={`mb-2 ${styles.image}`}/>
@@ -25,27 +28,14 @@ function Ingredient({order, openModal, ingredient}) {
     </li>
   )
 }
+
 Ingredient.propTypes = {
   order: PropTypes.shape({
     bun: PropTypes.string,
     others: PropTypes.arrayOf(PropTypes.string)
   }),
   openModal: PropTypes.func,
-  ingreient: PropTypes.shape({
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    type: PropTypes.string,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    calories: PropTypes.number,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    image_mobile: PropTypes.string,
-    image_large: PropTypes.string,
-    __v: PropTypes.number
-  })
-  
+  ingreient: ingredientType
 }
 
 export default Ingredient;
