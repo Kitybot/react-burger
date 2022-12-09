@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './orderDetails.module.css';
+import styles from './order-Details.module.css';
 import {CheckMarkIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
 

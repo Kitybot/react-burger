@@ -1,5 +1,5 @@
 import React from "react";
-import styles from './modalOverlay.module.css';
+import styles from './modal-Overlay.module.css';
 import PropTypes from "prop-types";
 
 function ModalOverlay({children, closeModalClickOverlay}) {

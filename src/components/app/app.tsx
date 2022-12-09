@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import styles from './app.module.css';
-import AppHeader from '../appHeader/appHeader';
-import BurgerIngredients from '../burgerIngredients/burgerIngredients';
-import BurgerConstructor from '../burgerConstructor/burgerConstructor';
+import AppHeader from '../app-Header/app-Header';
+import BurgerIngredients from '../burger-Ingredients/burger-Ingredients';
+import BurgerConstructor from '../burger-Constructor/burger-Constructor';
 import {urlGetIngredients} from '../../utils/utils';
 import Modal from '../modal/modal';
-import OrderDetails from '../orderDetails/orderDetails';
-import IngredientDetails from '../ingredientDetalis/ingredientDetalis';
-import ErrorMessage from '../errorMassege/errorMassege';
+import OrderDetails from '../order-Details/order-Details';
+import IngredientDetails from '../ingredient-Detalis/ingredient-Detalis';
+import ErrorMessage from '../error-Massege/error-Massege';
 
 
 const App = () => {

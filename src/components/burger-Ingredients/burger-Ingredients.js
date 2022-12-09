@@ -1,8 +1,8 @@
 import React from "react";
-import styles from './burgerIngredients.module.css';
+import styles from './burger-Ingredients.module.css';
 import PropTypes from 'prop-types';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
-import TypeIngredient from '../typeIngredient/typeIngredient';
+import TypeIngredient from '../type-Ingredient/type-Ingredient';
 import {ingredientType} from '../../utils/types';
 
 function BurgerIngredients ({order, ingredients, openModal}) {
