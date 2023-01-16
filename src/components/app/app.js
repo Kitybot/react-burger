@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import styles from './app.module.css';
-import AppHeader from '../app-Header/app-Header';
-import BurgerIngredients from '../burger-Ingredients/burger-Ingredients';
-import BurgerConstructor from '../burger-Constructor/burger-Constructor';
+import AppHeader from '../app-header/app-header';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { baseUrl, checkResponse } from '../../utils/utils';
 import Modal from '../modal/modal';
-import OrderDetails from '../order-Details/order-Details';
-import IngredientDetails from '../ingredient-Detalis/ingredient-Detalis';
-import ErrorMessage from '../error-Massege/error-Massege';
+import OrderDetails from '../order-details/order-details';
+import IngredientDetails from '../ingredient-detalis/ingredient-detalis';
+import ErrorMessage from '../error-massege/error-massege';
 import {IngredientsContext, OrderContext} from '../../services/appContext';
 
 
 const App = () => {
-
+  
   const [activePage, setActivePage] = useState('constructor');
   const [ingredients, setIngredients] = useState(null);
   const [isModalActive, setIsModalActive] = useState({
@@ -77,7 +77,7 @@ const App = () => {
     }
   };
   const [stateOrder, dispatchOrder] = useReducer(reducerOrder, initialOrder, initOrder);
-
+  
   useEffect( () => {
     const getIngredients = () => {
       fetch(`${baseUrl}ingredients`)

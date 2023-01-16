@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import PropTypes from 'prop-types';
-import styles from './type-Ingredient.module.css';
+import styles from './type-ingredient.module.css';
 import Ingredient from "../ingredient/ingredient";
 import { IngredientsContext } from "../../services/appContext";
 

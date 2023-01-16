@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import styles from './burger-Constructor.module.css';
+import styles from './burger-constructor.module.css';
 import PropTypes from 'prop-types';
 import { CurrencyIcon, Button, ConstructorElement, DragIcon } from 
 '@ya.praktikum/react-developer-burger-ui-components';
@@ -11,7 +11,7 @@ function getNewTodo() {
 }
 
 function BurgerConstructor({openModal}) {
-
+  
   const ingredients = useContext(IngredientsContext);
 
   const [stateOrder, dispatchOrder] = useContext(OrderContext);
@@ -25,17 +25,15 @@ function BurgerConstructor({openModal}) {
       return item._id === stateOrder.bun;
     });
   },[stateOrder.bun]);
-
- 
+  
   const othersIngredients = React.useMemo( () => {
     return stateOrder.others.map((item) => {
       return ingredients.find( meal => {
         return meal._id === item;
       });
     });
-
   }, [stateOrder.others]);
-
+  
   useEffect(() => {
       dispatchOrder({
       type: "countPrice",
@@ -57,7 +55,6 @@ function BurgerConstructor({openModal}) {
             getNewTodo();
             return (<li className={`pl-4 ${styles.otherIngredient}`} key={todoCounter}>
                       <DragIcon type="primary" />
-                      <ConstructorElement text={item.name} thumbnail={item.image} price={item.price}/>
                       <ConstructorElement text={item.name} thumbnail={item.image} 
                       price={item.price}/>
                     </li>)
@@ -73,7 +70,7 @@ function BurgerConstructor({openModal}) {
           <p className="text text_type_digits-medium mr-2">{stateOrder.price}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large" onClick={openModalOrderDetails}>
+        <Button htmlType="button" type="primary" size="large" onClick={openModalOrderDetails}>
           Оформить заказ
         </Button>
       </div>

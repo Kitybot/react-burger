@@ -7,7 +7,6 @@ import { OrderContext } from "../../services/appContext";
 
 function Ingredient({openModal, ingredient}) {
 
-  
   const [stateOrder] = useContext(OrderContext);
 
   const number = ingredient._id === stateOrder.bun ? 1 : stateOrder.others.reduce(
@@ -19,7 +18,7 @@ function Ingredient({openModal, ingredient}) {
   const openModalIngredientDetails = () => {
     openModal('ingredientDetails', ingredient);
   }
-  
+
   return (
     <li className={styles.ingreient} id={ingredient.id} onClick={openModalIngredientDetails}>
       <img src={ingredient.image} alt={`Иконка ${ingredient.name}`} className={`mb-2 ${styles.image}`}/>
@@ -37,4 +36,5 @@ Ingredient.propTypes = {
   openModal: PropTypes.func,
   ingreient: ingredientType
 }
+
 export default Ingredient;

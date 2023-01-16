@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import styles from './order-Details.module.css';
+import styles from './order-details.module.css';
 import {CheckMarkIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderContext } from '../../services/appContext';
 import { baseUrl, checkResponse } from '../../utils/utils';
