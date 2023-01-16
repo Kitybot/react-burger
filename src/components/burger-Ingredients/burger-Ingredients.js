@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from './burger-Ingredients.module.css';
 import PropTypes from 'prop-types';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import TypeIngredient from '../type-Ingredient/type-Ingredient';
-import {ingredientType} from '../../utils/types';
+import { IngredientsContext } from "../../services/appContext";
 
-function BurgerIngredients ({order, ingredients, openModal}) {
+function BurgerIngredients ({openModal}) {
 
-  const {number, execution, ...orderIngredients} = order;
+  const ingredients = useContext(IngredientsContext);
 
   const [current, setCurrent] = React.useState('bun');
   
@@ -15,7 +15,9 @@ function BurgerIngredients ({order, ingredients, openModal}) {
     <section className={`pt-10 ${styles.ingredients}`}>
       {ingredients ? 
         (<>
-          <h1 className={`text text_type_main-large mb-5 ${styles.title}`}>Соберите бургер</h1>
+          <h1 className={`text text_type_main-large mb-5 ${styles.title}`}>
+            Соберите бургер
+          </h1>
           <nav className={`mb-10 ${styles.tabs}`}>
             <a href="#buns" className={styles.links}>
               <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>Булки</Tab>
@@ -28,9 +30,15 @@ function BurgerIngredients ({order, ingredients, openModal}) {
             </a>
           </nav>
           <ul className={styles.listsIngredients}>
-            <TypeIngredient data={ingredients} type='bun' order={orderIngredients} id='buns' openModal={openModal}>Булки</TypeIngredient>
-            <TypeIngredient data={ingredients} type='sauce' order={orderIngredients} id='sauces' openModal={openModal}>Соусы</TypeIngredient>
-            <TypeIngredient data={ingredients} type='main' order={orderIngredients} id='mains' openModal={openModal}>Начинки</TypeIngredient>
+            <TypeIngredient type='bun' id='buns' openModal={openModal}>
+              Булки
+            </TypeIngredient>
+            <TypeIngredient type='sauce' id='sauces' openModal={openModal}>
+              Соусы
+            </TypeIngredient>
+            <TypeIngredient type='main' id='mains' openModal={openModal}>
+              Начинки
+            </TypeIngredient>
           </ul>
         </>) :
         (<h1 className={`text text_type_main-large mb-5 ${styles.title}`}>Загружаем ингредиенты...</h1>)
@@ -40,13 +48,6 @@ function BurgerIngredients ({order, ingredients, openModal}) {
 }
 
 BurgerIngredients.propTypes = {
-  order: PropTypes.shape({
-    number: PropTypes.string,
-    execution: PropTypes.string,
-    bun: PropTypes.string,
-    others: PropTypes.arrayOf(PropTypes.string)
-  }).isRequired,
-  ingredients: PropTypes.arrayOf(ingredientType),
   openModal: PropTypes.func.isRequired
 }
 
