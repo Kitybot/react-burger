@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from '../ingredient/ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import {ingredientType} from '../../utils/types';
+import { OrderContext } from "../../services/appContext";
 
-function Ingredient({order, openModal, ingredient}) {
+function Ingredient({openModal, ingredient}) {
 
-  const number = ingredient.id === order.bun ? 1 : order.others.reduce(
+  const [stateOrder] = useContext(OrderContext);
+
+  const number = ingredient.id === stateOrder.bun ? 1 : stateOrder.others.reduce(
     function(previousValue, item) {
-      return ingredient.id === item ? previousValue += 1 : previousValue;
+      return ingredient._id === item ? previousValue += 1 : previousValue;
     }, 0
-  )
+  );
 
   const openModalIngredientDetails = () => {
     openModal('ingredientDetails', ingredient);
@@ -30,10 +33,6 @@ function Ingredient({order, openModal, ingredient}) {
 }
 
 Ingredient.propTypes = {
-  order: PropTypes.shape({
-    bun: PropTypes.string,
-    others: PropTypes.arrayOf(PropTypes.string)
-  }),
   openModal: PropTypes.func,
   ingreient: ingredientType
 }
