@@ -52,6 +52,7 @@ function OrderDetails() {
     };
     sendOrder();
   }, [])
+  return(
 
     request.isActive ?
       (
@@ -70,6 +71,7 @@ function OrderDetails() {
           Дождитесь готовности на орбитальной станции
         </p>
       </>)
+  )
 }
 
 export default OrderDetails;

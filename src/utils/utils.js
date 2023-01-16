@@ -5,4 +5,6 @@ export function checkResponse (res) {
       return Promise.reject(` Неудачное обращение к серверу. Код ошибки: ${res.status}.`);
     }
     return res.json();
+
 }
+

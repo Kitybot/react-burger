@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styles from '../ingredient/ingredient.module.css';
+import styles from './ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import {ingredientType} from '../../utils/types';
@@ -7,9 +7,10 @@ import { OrderContext } from "../../services/appContext";
 
 function Ingredient({openModal, ingredient}) {
 
+  
   const [stateOrder] = useContext(OrderContext);
 
-  const number = ingredient.id === stateOrder.bun ? 1 : stateOrder.others.reduce(
+  const number = ingredient._id === stateOrder.bun ? 1 : stateOrder.others.reduce(
     function(previousValue, item) {
       return ingredient._id === item ? previousValue += 1 : previousValue;
     }, 0
@@ -18,7 +19,7 @@ function Ingredient({openModal, ingredient}) {
   const openModalIngredientDetails = () => {
     openModal('ingredientDetails', ingredient);
   }
-
+  
   return (
     <li className={styles.ingreient} id={ingredient.id} onClick={openModalIngredientDetails}>
       <img src={ingredient.image} alt={`Иконка ${ingredient.name}`} className={`mb-2 ${styles.image}`}/>
@@ -36,5 +37,4 @@ Ingredient.propTypes = {
   openModal: PropTypes.func,
   ingreient: ingredientType
 }
-
 export default Ingredient;

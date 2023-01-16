@@ -15,7 +15,9 @@ function BurgerIngredients ({openModal}) {
     <section className={`pt-10 ${styles.ingredients}`}>
       {ingredients ? 
         (<>
-          <h1 className={`text text_type_main-large mb-5 ${styles.title}`}>Соберите бургер</h1>
+          <h1 className={`text text_type_main-large mb-5 ${styles.title}`}>
+            Соберите бургер
+          </h1>
           <nav className={`mb-10 ${styles.tabs}`}>
             <a href="#buns" className={styles.links}>
               <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>Булки</Tab>
