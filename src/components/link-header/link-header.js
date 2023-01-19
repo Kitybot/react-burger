@@ -1,5 +1,5 @@
 import React from "react";
-import styles from './link-Header.module.css';
+import styles from './link-header.module.css';
 import PropTypes from 'prop-types';
 
 function LinkHeader(props) {

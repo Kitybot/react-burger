@@ -1,5 +1,5 @@
 import React from "react";
-import styles from '../ingredient-Detalis/ingredient-Detalis.module.css';
+import styles from '../ingredient-detalis/ingredient-detalis.module.css';
 import PropTypes from 'prop-types';
 import {ingredientType} from '../../utils/types';
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import styles from './app-Header.module.css';
+import styles from './app-header.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import LinkHeader from '../link-Header/link-Header';
+import LinkHeader from '../link-header/link-header';
 import PropTypes from 'prop-types';
 
 function AppHeader({activePage}) {
