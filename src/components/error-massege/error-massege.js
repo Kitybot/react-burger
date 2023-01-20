@@ -2,14 +2,14 @@ import React from "react";
 import { PropsWithChildren } from "react";
 import PropTypes from 'prop-types';
 
-function ErrorMessage({errorMessage}) {
+function ErrorMessage({message}) {
   return(
-      <h2 className='text text_type_main-large'>{errorMessage}</h2>
+      <h2 className='text text_type_main-large'>{message}</h2>
   )
 }
 
 ErrorMessage.propTypes = {
-  errorMessage: PropTypes.string
+  message: PropTypes.string
 }
 
 export default ErrorMessage;
