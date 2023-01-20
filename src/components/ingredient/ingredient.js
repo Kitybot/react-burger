@@ -1,27 +1,44 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from './ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import {ingredientType} from '../../utils/types';
-import { OrderContext } from "../../services/appContext";
+import { openModalActionCreator } from '../../services/actions/app';
+import { ADD_INGREDIENT_DETAILS } from '../../services/actions/ingredient-detalis';
+import { useDrag } from "react-dnd";
 
-function Ingredient({openModal, ingredient}) {
+function Ingredient({ingredient}) {
 
-  const [stateOrder] = useContext(OrderContext);
+  const dispatch = useDispatch();
+  const ingredientsConstructor = useSelector( state => state.burgerConstructor)
 
-  const number = ingredient._id === stateOrder.bun ? 1 : stateOrder.others.reduce(
-    function(previousValue, item) {
-      return ingredient._id === item ? previousValue += 1 : previousValue;
-    }, 0
-  );
+  const number = ingredient._id === ingredientsConstructor.bun ? 1 : 
+    ingredientsConstructor.others.reduce(
+      function(previousValue, item) {
+        return ingredient._id === item.id ? previousValue += 1 : previousValue;
+      }, 0
+    );
+
+  const [, dragRef, dragPreviewRef] = useDrag({
+    type: 'ingredient',
+    item: {
+      _id: ingredient._id,
+      _type: ingredient.type,
+    }
+  }, [ingredient._id, ingredient.type]);
+
 
   const openModalIngredientDetails = () => {
-    openModal('ingredientDetails', ingredient);
+    dispatch ({
+      type: ADD_INGREDIENT_DETAILS,
+      ingredient
+    })
+    dispatch(openModalActionCreator('ingredientDetails'));
   }
 
   return (
-    <li className={styles.ingreient} id={ingredient.id} onClick={openModalIngredientDetails}>
-      <img src={ingredient.image} alt={`Иконка ${ingredient.name}`} className={`mb-2 ${styles.image}`}/>
+    <li className={styles.ingreient} id={ingredient.id} onClick={openModalIngredientDetails} ref={dragRef}>
+    <img src={ingredient.image} alt={`Иконка ${ingredient.name}`} className={`mb-2 ${styles.image}`}ref={dragPreviewRef}/>
       {number !== 0 && (<Counter count={number} size="default"/>)}
       <div className={`mb-2 ${styles.prise}`}>
         <p className={`text text_type_digits-default mr-2 ${styles.priseText}`}>{ingredient.price}</p>
@@ -33,7 +50,6 @@ function Ingredient({openModal, ingredient}) {
 }
 
 Ingredient.propTypes = {
-  openModal: PropTypes.func,
   ingreient: ingredientType
 }
 

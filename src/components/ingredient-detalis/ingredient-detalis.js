@@ -1,11 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styles from '../ingredient-detalis/ingredient-detalis.module.css';
-import PropTypes from 'prop-types';
-import {ingredientType} from '../../utils/types';
 
-function IngredientDetails({ingerdient}) {
 
-  const {image_large, name, calories, proteins, fat, carbohydrates} = ingerdient;
+function IngredientDetails() {
+
+  const {image_large, name, calories, proteins, fat, carbohydrates} = useSelector( state => state.ingredientDetails);
 
   return(
     <>
@@ -34,8 +34,5 @@ function IngredientDetails({ingerdient}) {
   )
 }
 
-IngredientDetails.propTypes = {
-  ingerdient: ingredientType
-}
 
 export default IngredientDetails;

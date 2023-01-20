@@ -1,5 +1,5 @@
-import { deleteIngrdientDetails } from './ingredientDetails';
-import { resetConstructorActionCreator } from './burgerConstructor';
+import { deleteIngrdientDetails } from './ingredient-detalis';
+import { resetConstructorActionCreator } from './burger-constructor';
 
 export const OPEN_MODAL = 'OPEN_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';

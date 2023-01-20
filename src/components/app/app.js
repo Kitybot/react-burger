@@ -1,3 +1,7 @@
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
@@ -6,15 +10,12 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import IngredientDetails from '../ingredient-detalis/ingredient-detalis';
 import ErrorMessage from '../error-massege/error-massege';
-import { useDispatch, useSelector } from 'react-redux';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { getIngredients } from '../../services/actions/burgerIngredients';
+import { getIngredients } from '../../services/actions/burger-ingredient';
 import { closeModal } from '../../services/actions/app';
 
 
 const App = () => {
-  
+
   const dispatch = useDispatch();
 
   const { ingredients, isModalActive, message } = useSelector( state => ({
@@ -22,22 +23,21 @@ const App = () => {
     isModalActive: state.app.isModalActive.isModalActive,
     message: state.app.isModalActive.message,
   }));
+
   useEffect( () => {
-    
-  dispatch(getIngredients())
+    dispatch(getIngredients())
   } , [dispatch]);
 
   const closeModalWithDispatch = () => dispatch(closeModal(isModalActive));
 
   return (
     <div className={styles.app}>
-      <AppHeader/>
       <DndProvider backend={HTML5Backend}>
         <main className={styles.main}>
-        <BurgerIngredients/>
-        {ingredients && (<BurgerConstructor/>)}
+          <BurgerIngredients/>
+          {ingredients && (<BurgerConstructor/>)}
         </main>
-        </DndProvider>
+      </DndProvider>
       {isModalActive !== '' && (
         <Modal closeModalWithDispatch={closeModalWithDispatch} activeModal={isModalActive}>
           {isModalActive === 'orderDetails' && ( <OrderDetails/> )}
@@ -48,5 +48,4 @@ const App = () => {
     </div>
   );
 }
-
 export default App;
