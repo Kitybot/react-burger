@@ -19,10 +19,17 @@ function LinkHeader(props) {
   };
 
   return(
-    <a href="#" className={`pr-5 pl-5 ${styles.link}`} onMouseEnter={changeIsHoverTrue} onMouseLeave={changeIsHoverFalse}>
+    <a 
+      href="#" 
+      className={`pr-5 pl-5 ${styles.link}`} 
+      onMouseEnter={changeIsHoverTrue}
+      onMouseLeave={changeIsHoverFalse}
+    >
       {props.icon}
       <p className={`text text_type_main-default ml-2 ${props.textColor === 'active' ? 
-      styles.active : styles.inactive}`}>{props.children}</p>
+        styles.active : styles.inactive}`}>
+        {props.children}
+      </p>
     </a>
   )
 }

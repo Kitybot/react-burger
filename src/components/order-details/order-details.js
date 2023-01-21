@@ -6,10 +6,12 @@ import { sendOrder } from '../../services/actions/order-detalis';
 
 function OrderDetails() {
 
-  const { constructorIngredients, orderDetails } = useSelector( state => ({constructorIngredients: state.burgerConstructor, orderDetails: state.orderDetails,}))
-
+  const { constructorIngredients,
+          orderDetails } = useSelector( state => ({
+            constructorIngredients: state.burgerConstructor,
+            orderDetails: state.orderDetails,
+          }))
   const dispatch = useDispatch();
-
   const [request, setRequest] = useState({
                                             isActive: true,
                                             message: ''
@@ -20,7 +22,6 @@ function OrderDetails() {
   }, [dispatch, constructorIngredients])
 
   return(
-
     request.isActive ?
       (
         <>
@@ -38,6 +39,7 @@ function OrderDetails() {
           Дождитесь готовности на орбитальной станции
         </p>
       </>)
+    
   )
 }
 

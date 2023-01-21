@@ -9,25 +9,26 @@ import { openModalActionCreator } from '../../services/actions/app';
 import { useDrop } from "react-dnd";
 import OtherIngredientConstructor from '../other-ingredient-constructor/other-ingredient-constructor';
 
-
-
 function BurgerConstructor() {
+
+  
   const {ingredients, burgerPrice, bunId, othersId} = useSelector(state => ({
     ingredients: state.burgerIngredients,
     burgerPrice: state.orderDetails.price,
     bunId: state.burgerConstructor.bun,
     othersId: state.burgerConstructor.others,
   }));
-
   const dispatch = useDispatch();
 
+  
   const [{canAcceptIngredient}, ingredientDropTargetRef] = useDrop({
     accept: 'ingredient',
     drop: (item) => {
       if (!bunId && item._type !== 'bun') {
         dispatch(openModalActionCreator('error','Пожалуйста, выберите сначала булку.'));
       } else {
-        dispatch(addIngredientActionCreator(item));
+        dispatch(addIngredientActionCreator(item)
+        );
       }
     },
     collect: (monitor) => ({
@@ -56,7 +57,6 @@ function BurgerConstructor() {
       return item._id === bunId;
     });
   },[bunId, ingredients]);
-  
   const othersIngredients = React.useMemo( () => {
     return othersId.map((item) => {
       const ingredient = {...ingredients.find( meal => {
@@ -65,8 +65,9 @@ function BurgerConstructor() {
       ingredient.uuid = item.uuid;
       return ingredient;
     });
-    }, [othersId, ingredients]);
-  
+  }, [othersId, ingredients]);
+
+
   useEffect(() => {
     const bunPrice = bun === undefined ? 0 : bun.price;
     const burgerPrice = bunPrice * 2 + othersIngredients.reduce( 
@@ -96,7 +97,7 @@ function BurgerConstructor() {
 
   return (
     <section className={`pl-4 pt-25 pb-3 ${styles.order}`}>
-     <ul className={`${styles.orderStructure} ${canAcceptIngredient && styles.canAccept}`} 
+      <ul className={`${styles.orderStructure} ${canAcceptIngredient && styles.canAccept}`} 
         ref={ingredientDropTargetRef}>
         <li className={`${styles.bun} pr-4`}>
           {bun && (<ConstructorElement type="top" isLocked={true} text={`${bun.name} 
@@ -104,7 +105,7 @@ function BurgerConstructor() {
         </li>
         <ul className={`${othersIngredients.length !== 0 && "mt-4 mb-4 pr-4"} 
         ${styles.othersIngredients}`}>
-             {othersIngredients.map((item, index) => {
+          {othersIngredients.map((item, index) => {
             return (<OtherIngredientConstructor item={item} index={index} 
               removeIngredient={removeIngredient} moveIngredient={moveIngredient} 
               key={item.uuid}/>)

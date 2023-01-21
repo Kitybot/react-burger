@@ -15,7 +15,7 @@ import { closeModal } from '../../services/actions/app';
 
 
 const App = () => {
-
+  
   const dispatch = useDispatch();
 
   const { ingredients, isModalActive, message } = useSelector( state => ({
@@ -32,6 +32,7 @@ const App = () => {
 
   return (
     <div className={styles.app}>
+      <AppHeader/>
       <DndProvider backend={HTML5Backend}>
         <main className={styles.main}>
           <BurgerIngredients/>
@@ -48,4 +49,5 @@ const App = () => {
     </div>
   );
 }
+
 export default App;

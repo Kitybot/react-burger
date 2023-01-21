@@ -11,10 +11,11 @@ function BurgerIngredients () {
   const listBuns = useRef(null);
   const listSauces = useRef(null);
   const listMains = useRef(null);
+
   const ingredients = useSelector(state => state.burgerIngredients);
 
   const [current, setCurrent] = React.useState('bun');
-  
+
   const handleScroll = () => {
     const positionListsIngredients = listsIngredients.current.getBoundingClientRect().top;
     const positionListSauces = listSauces.current.getBoundingClientRect().top;
@@ -36,7 +37,7 @@ function BurgerIngredients () {
       setCurrent(currentList);
     }
   };
-
+  
   return(
     <section className={`pt-10 ${styles.ingredients}`}>
       {ingredients ? 
@@ -63,9 +64,15 @@ function BurgerIngredients () {
           </nav>
           <ul className={styles.listsIngredients} id='liste' onScroll={handleScroll} 
             ref={listsIngredients}>
-            <TypeIngredient type='bun' id='buns' ref={listBuns}>Булки</TypeIngredient>
-            <TypeIngredient type='sauce' id='sauces' ref={listSauces}>Соусы</TypeIngredient>
-            <TypeIngredient type='main' id='mains' ref={listMains}>Начинки</TypeIngredient>
+            <TypeIngredient type='bun' id='buns' ref={listBuns}>
+              Булки
+            </TypeIngredient>
+            <TypeIngredient type='sauce' id='sauces' ref={listSauces}>
+              Соусы
+            </TypeIngredient>
+            <TypeIngredient type='main' id='mains' ref={listMains}>
+              Начинки
+            </TypeIngredient>
           </ul>
         </>) :
         (<h1 className={`text text_type_main-large mb-5 ${styles.title}`}>

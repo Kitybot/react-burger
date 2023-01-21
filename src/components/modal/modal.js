@@ -5,8 +5,8 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
 
-function Modal({closeModalWithDispatch, children, activeModal}) {
-  
+function Modal({children, activeModal, closeModalWithDispatch}) {
+
   const closeModalClickOverlay = (e) => {
     if (e.target.id === 'overlay') {
       closeModalWithDispatch();
@@ -30,7 +30,12 @@ function Modal({closeModalWithDispatch, children, activeModal}) {
   return ReactDOM.createPortal(
     ( <ModalOverlay closeModalClickOverlay={closeModalClickOverlay}>
         <div className={`pl-10 pt-10 pr-10 pb-15 ${styles.modal} ${styles[activeModal]}`}>
-          <div className={styles.closeIcon}><CloseIcon type="primary"  onClick={() => closeModalWithDispatch()}/></div>
+          <div className={styles.closeIcon}>
+            <CloseIcon 
+              type="primary" 
+              onClick={() => closeModalWithDispatch()}
+            />
+          </div>
           {children}
         </div>
       </ModalOverlay>),
@@ -39,9 +44,9 @@ function Modal({closeModalWithDispatch, children, activeModal}) {
 }
 
 Modal.propTypes = {
-  closeModalWithDispatch: PropTypes.func.isRequired,
   children: PropTypes.node,
-  activeModal: PropTypes.string.isRequired
+  activeModal: PropTypes.string.isRequired,
+  closeModalWithDispatch: PropTypes.func.isRequired,
 }
 
 export default Modal;

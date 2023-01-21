@@ -25,19 +25,22 @@ function AppHeader() {
     <header className={styles.header}>
       <nav className={styles.navigation}>
         <LinkHeader 
-          textColor={activePage === 'constructor' || isLinkHover['Конструктор'] ? 'active' : 'inactive'}
+          textColor={activePage === 'constructor' || isLinkHover['Конструктор'] ? 
+            'active' : 'inactive'}
           icon= {<BurgerIcon 
-            type={activePage === 'constructor' || isLinkHover['Конструктор'] ? "primary" : "secondary"}
-          />}
+                    type={activePage === 'constructor' || isLinkHover['Конструктор'] ? 
+                      "primary" : "secondary"}
+                 />}
           state={isLinkHover}
           changeIsHover={toggleIsHover}
           >
           Конструктор
         </LinkHeader>
         <LinkHeader 
-           textColor={activePage === 'orders' || isLinkHover['Лента заказов'] ? 'active' : 'inactive'}
-          icon={<ListIcon 
-            type={activePage === 'orders' || isLinkHover['Лента заказов'] ? "primary" : "secondary"}/>} 
+          textColor={activePage === 'orders' || isLinkHover['Лента заказов'] ? 
+            'active' : 'inactive'}
+          icon={<ListIcon type={activePage === 'orders' || isLinkHover['Лента заказов'] ? 
+            "primary" : "secondary"}/>} 
           state={isLinkHover}
           changeIsHover={toggleIsHover}
           >
@@ -47,9 +50,10 @@ function AppHeader() {
       <Logo />
       <nav className={styles.accountLink}>
         <LinkHeader 
-          textColor={activePage === 'account' || isLinkHover['Личный кабинет'] ? 'active' : 'inactive'}
-          icon={<ProfileIcon 
-            type={activePage === 'account' || isLinkHover['Личный кабинет'] ? "primary" : "secondary"}/>}
+          textColor={activePage === 'account' || isLinkHover['Личный кабинет'] ? 
+            'active' : 'inactive'}
+          icon={<ProfileIcon type={activePage === 'account' || 
+            isLinkHover['Личный кабинет'] ? "primary" : "secondary"}/>}
           state={isLinkHover}
           changeIsHover={toggleIsHover}
           >

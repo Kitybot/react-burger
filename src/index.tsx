@@ -23,7 +23,6 @@ const store = createStore(rootReducer, enhancer);
 root.render(
   <Provider store={store}>
     <App />
-  
   </Provider>
 );
 

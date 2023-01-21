@@ -26,8 +26,7 @@ function Ingredient({ingredient}) {
       _type: ingredient.type,
     }
   }, [ingredient._id, ingredient.type]);
-
-
+  
   const openModalIngredientDetails = () => {
     dispatch ({
       type: ADD_INGREDIENT_DETAILS,
@@ -37,14 +36,28 @@ function Ingredient({ingredient}) {
   }
 
   return (
-    <li className={styles.ingreient} id={ingredient.id} onClick={openModalIngredientDetails} ref={dragRef}>
-    <img src={ingredient.image} alt={`Иконка ${ingredient.name}`} className={`mb-2 ${styles.image}`}ref={dragPreviewRef}/>
+    <li 
+      className={styles.ingreient} 
+      id={ingredient.id} 
+      onClick={openModalIngredientDetails}
+      ref={dragRef}
+    >
+      <img 
+        src={ingredient.image} 
+        alt={`Иконка ${ingredient.name}`} 
+        className={`mb-2 ${styles.image}`}
+        ref={dragPreviewRef}
+      />
       {number !== 0 && (<Counter count={number} size="default"/>)}
       <div className={`mb-2 ${styles.prise}`}>
-        <p className={`text text_type_digits-default mr-2 ${styles.priseText}`}>{ingredient.price}</p>
+        <p className={`text text_type_digits-default mr-2 ${styles.priseText}`}>
+          {ingredient.price}
+        </p>
         <CurrencyIcon type="primary"/>
       </div>
-      <p className={`text text_type_main-default ${styles.description}`}>{ingredient.name}</p>
+      <p className={`text text_type_main-default ${styles.description}`}>
+        {ingredient.name}
+      </p>
     </li>
   )
 }
