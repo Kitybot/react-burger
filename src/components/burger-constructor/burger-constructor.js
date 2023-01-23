@@ -1,63 +1,114 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from './burger-constructor.module.css';
-import PropTypes from 'prop-types';
-import { CurrencyIcon, Button, ConstructorElement, DragIcon } from 
-'@ya.praktikum/react-developer-burger-ui-components';
-import {IngredientsContext, OrderContext} from '../../services/appContext';
+import { CurrencyIcon, Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import { DELETE_OTHER_INGREDIENT, MOVING_INGREDIENT, addIngredientActionCreator } from '../../services/actions/burger-constructor';
+import { COUNT_PRICE_BURGER } from '../../services/actions/order-detalis';
+import { openModalActionCreator } from '../../services/actions/app';
+import { useDrop } from "react-dnd";
+import OtherIngredientConstructor from '../other-ingredient-constructor/other-ingredient-constructor';
 
-let todoCounter = 0;
-function getNewTodo() {
-  todoCounter += 1;
-}
+function BurgerConstructor() {
 
-function BurgerConstructor({openModal}) {
   
-  const ingredients = useContext(IngredientsContext);
+  const {ingredients, burgerPrice, bunId, othersId} = useSelector(state => ({
+    ingredients: state.burgerIngredients,
+    burgerPrice: state.orderDetails.price,
+    bunId: state.burgerConstructor.bun,
+    othersId: state.burgerConstructor.others,
+  }));
+  const dispatch = useDispatch();
 
-  const [stateOrder, dispatchOrder] = useContext(OrderContext);
+  
+  const [{canAcceptIngredient}, ingredientDropTargetRef] = useDrop({
+    accept: 'ingredient',
+    drop: (item) => {
+      if (!bunId && item._type !== 'bun') {
+        dispatch(openModalActionCreator('error','Пожалуйста, выберите сначала булку.'));
+      } else {
+        dispatch(addIngredientActionCreator(item)
+        );
+      }
+    },
+    collect: (monitor) => ({
+        canAcceptIngredient: monitor.canDrop(),
+      })
+  }, [bunId]);
 
   const openModalOrderDetails = () => {
-    openModal('orderDetails');
+    if (!bunId) {
+      const message = `В Вашем заказе нет ни одного ингредиента. 
+        Составте, пожалуйста, бургер и мы с радостью примем Ваш заказ.`;
+      dispatch(openModalActionCreator('error', message));
+      return
+    }
+    if (!othersId.length) {
+      const message = `Ну какой же это бургер, если в нем только булки. 
+        Добавте другие ингредиенты.`;
+      dispatch(openModalActionCreator('error', message));
+      return
+    }
+    dispatch(openModalActionCreator('orderDetails'));
   }
 
   const bun = React.useMemo( () => {
     return ingredients.find(item => {
-      return item._id === stateOrder.bun;
+      return item._id === bunId;
     });
-  },[stateOrder.bun]);
-  
+  },[bunId, ingredients]);
   const othersIngredients = React.useMemo( () => {
-    return stateOrder.others.map((item) => {
-      return ingredients.find( meal => {
-        return meal._id === item;
-      });
+    return othersId.map((item) => {
+      const ingredient = {...ingredients.find( meal => {
+        return meal._id === item.id;
+      })};
+      ingredient.uuid = item.uuid;
+      return ingredient;
     });
-  }, [stateOrder.others]);
-  
+  }, [othersId, ingredients]);
+
+
   useEffect(() => {
-      dispatchOrder({
-      type: "countPrice",
-      bun,
-      othersIngredients
+    const bunPrice = bun === undefined ? 0 : bun.price;
+    const burgerPrice = bunPrice * 2 + othersIngredients.reduce( 
+      (previousValue, item) => {
+        return previousValue + item.price;
+      }, 0);
+    dispatch({
+      type: COUNT_PRICE_BURGER,
+      price: burgerPrice,
     })
-  }, [bun, othersIngredients])
+  }, [bun, othersIngredients, dispatch]);
+
+  const removeIngredient = (e) => {
+    dispatch({
+      type: DELETE_OTHER_INGREDIENT,
+      index: e.target.closest('li').getAttribute('index'),
+    });
+  };
+
+  const moveIngredient = (indexOfMoved, indexOfRecipient) => {
+    dispatch({
+      type: MOVING_INGREDIENT,
+      indexOfMoved,
+      indexOfRecipient,
+    })
+  };
 
   return (
     <section className={`pl-4 pt-25 pb-3 ${styles.order}`}>
-      <ul className={styles.orderStructure}>
+      <ul className={`${styles.orderStructure} ${canAcceptIngredient && styles.canAccept}`} 
+        ref={ingredientDropTargetRef}>
         <li className={`${styles.bun} pr-4`}>
           {bun && (<ConstructorElement type="top" isLocked={true} text={`${bun.name} 
           (верх)`} thumbnail={bun.image} price={bun.price}/>)}
         </li>
         <ul className={`${othersIngredients.length !== 0 && "mt-4 mb-4 pr-4"} 
         ${styles.othersIngredients}`}>
-          {othersIngredients.map((item) => {
-            getNewTodo();
-            return (<li className={`pl-4 ${styles.otherIngredient}`} key={todoCounter}>
-                      <DragIcon type="primary" />
-                      <ConstructorElement text={item.name} thumbnail={item.image} 
-                      price={item.price}/>
-                    </li>)
+          {othersIngredients.map((item, index) => {
+            return (<OtherIngredientConstructor item={item} index={index} 
+              removeIngredient={removeIngredient} moveIngredient={moveIngredient} 
+              key={item.uuid}/>)
           })}
         </ul>
         <li className={`${styles.bun} pr-4`}>
@@ -67,7 +118,7 @@ function BurgerConstructor({openModal}) {
       </ul>
       <div className={`mt-10 mb-10 ${styles.finishOrder} pr-4`}>
         <div className={`mr-10 ${styles.price}`}>
-          <p className="text text_type_digits-medium mr-2">{stateOrder.price}</p>
+          <p className="text text_type_digits-medium mr-2">{burgerPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button htmlType="button" type="primary" size="large" onClick={openModalOrderDetails}>
@@ -76,10 +127,6 @@ function BurgerConstructor({openModal}) {
       </div>
     </section>
   )
-}
-
-BurgerConstructor.propTypes = {
-  openModal: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor;

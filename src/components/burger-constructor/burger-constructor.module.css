@@ -74,3 +74,8 @@
     display: flex;
     align-items: center;
   }
+
+
+.canAccept{
+  background-color: #3c3c44;
+}
