@@ -1,25 +1,74 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import styles from './order-details.module.css';
 import {CheckMarkIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import { sendOrder } from '../../services/actions/order-detalis';
+import { getAccessTokenOutCookie } from '../../utils/utils';
+import { requestWithAccessToken, getUser } from '../../services/actions/user';
+import PropTypes from 'prop-types';
 
-function OrderDetails() {
+function OrderDetails({closeModalWithDispatch}) {
 
   const { constructorIngredients,
-          orderDetails } = useSelector( state => ({
+          orderDetails,
+          userName,
+          userEmail }= useSelector( state => ({
             constructorIngredients: state.burgerConstructor,
             orderDetails: state.orderDetails,
-          }))
+            userName: state.user.userName, 
+            userEmail: state.user.email,
+          }));
   const dispatch = useDispatch();
+  const history = useHistory();
   const [request, setRequest] = useState({
                                             isActive: true,
                                             message: ''
                                           });
 
   useEffect(() => {
-    dispatch(sendOrder(setRequest, constructorIngredients))
-  }, [dispatch, constructorIngredients])
+    new Promise((resolve, reject) => {
+      if (userName === '' || userEmail === '') {
+        setRequest({isActive: true, message: 'Запрашиваем информацию о пользователе...'});
+        const accessToken = getAccessTokenOutCookie();
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (accessToken && refreshToken) {
+          new Promise ((resolve, reject) => {
+            requestWithAccessToken( dispatch, 
+                                    getUser, 
+                                    accessToken, 
+                                    refreshToken, 
+                                    {resolve, reject})
+          })
+          .then(() => {
+            resolve();
+          })
+          .catch(() => {
+            closeModalWithDispatch(true);
+            history.replace({
+              pathname: '/login',
+              state: {from: '/'}
+            });
+            reject();
+          });
+        } else {
+          closeModalWithDispatch(true);
+          history.replace({
+            pathname: '/login',
+            state: {from: '/'}
+          });
+          reject();
+        }
+      } else {
+        resolve();
+      }
+    })
+    .then(() => {
+      const accessToken = getAccessTokenOutCookie();
+      dispatch(sendOrder(setRequest, constructorIngredients, accessToken));
+    })
+    .catch(() => {})
+  }, [dispatch, constructorIngredients]);
 
   return(
     request.isActive ?
@@ -41,6 +90,10 @@ function OrderDetails() {
       </>)
     
   )
+}
+
+OrderDetails.propTypes = {
+  closeModalWithDispatch: PropTypes.func,
 }
 
 export default OrderDetails;

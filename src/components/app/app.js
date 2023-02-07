@@ -1,51 +1,62 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import React from 'react';
 import styles from './app.module.css';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
+import Constructor from '../../pages/constructor';
+import NotFound404 from '../../pages/notFound404';
+import Registration from '../../pages/registration';
+import Authorization from '../../pages/authorization';
+import Recovery from '../../pages/recovery';
+import ResetPassword from '../../pages/resetPassword';
+import Profile from '../../pages/profile';
+import ProtectedRoute from '../protectedRoute/protectedRoute';
+import RouteNotAuthorized from '../routeNotAuthorized/routeNotAuthorized';
+import DetailsIngredient from '../../pages/detailsIngredient';
 import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
 import IngredientDetails from '../ingredient-detalis/ingredient-detalis';
-import ErrorMessage from '../error-massege/error-massege';
-import { getIngredients } from '../../services/actions/burger-ingredient';
-import { closeModal } from '../../services/actions/app';
 
 
 const App = () => {
-  
-  const dispatch = useDispatch();
-
-  const { ingredients, isModalActive, message } = useSelector( state => ({
-    ingredients: state.burgerIngredients,
-    isModalActive: state.app.isModalActive.isModalActive,
-    message: state.app.isModalActive.message,
-  }));
-
-  useEffect( () => {
-    dispatch(getIngredients())
-  } , [dispatch]);
-
-  const closeModalWithDispatch = () => dispatch(closeModal(isModalActive));
+  const location = useLocation();
+  const background = location.state && location.state.background;
+  const ingredient = location.state && location.state.ingredient;
 
   return (
-    <div className={styles.app}>
-      <AppHeader/>
-      <DndProvider backend={HTML5Backend}>
-        <main className={styles.main}>
-          <BurgerIngredients/>
-          {ingredients && (<BurgerConstructor/>)}
-        </main>
-      </DndProvider>
-      {isModalActive !== '' && (
-        <Modal closeModalWithDispatch={closeModalWithDispatch} activeModal={isModalActive}>
-          {isModalActive === 'orderDetails' && ( <OrderDetails/> )}
-          {isModalActive === 'ingredientDetails' && (<IngredientDetails/>)}
-          {isModalActive === 'error' && (<ErrorMessage message={message}/>)}
-        </Modal>
-      )}
+    <div className={`${styles.app} ${styles.variables}`}>
+        <AppHeader/>
+        <Switch location={ background || location }>
+          <Route path='/' exact={true}>
+            <Constructor/>
+          </Route>
+          <Route path='/ingredients/:_id'>
+            <DetailsIngredient />
+          </Route>
+          <RouteNotAuthorized path='/login' exact={true}>
+            <Authorization/>
+          </RouteNotAuthorized>
+          <RouteNotAuthorized path='/register' exact={true}>
+            <Registration/>
+          </RouteNotAuthorized>
+          <RouteNotAuthorized path='/forgot-password' exact={true}>
+            <Recovery/>
+          </RouteNotAuthorized>
+          <RouteNotAuthorized path='/reset-password' exact={true}>
+            <ResetPassword />
+          </RouteNotAuthorized>
+          <ProtectedRoute path='/profile'>
+            <Profile />
+          </ProtectedRoute>
+          <Route>
+            <NotFound404 />
+          </Route>
+        </Switch>
+        {background && (<Route path='/ingredients/:_id'>
+                          <Modal>
+                            <IngredientDetails 
+                              ingredient={ingredient}
+                              modal={true}/>
+                          </Modal>
+                        </Route>)}
     </div>
   );
 }

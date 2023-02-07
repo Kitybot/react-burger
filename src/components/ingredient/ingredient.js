@@ -3,13 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from './ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {ingredientType} from '../../utils/types';
-import { openModalActionCreator } from '../../services/actions/app';
-import { ADD_INGREDIENT_DETAILS } from '../../services/actions/ingredient-detalis';
 import { useDrag } from "react-dnd";
+import { Link, useLocation } from 'react-router-dom';
 
 function Ingredient({ingredient}) {
 
-  const dispatch = useDispatch();
+  const location = useLocation();
   const ingredientsConstructor = useSelector( state => state.burgerConstructor)
 
   const number = ingredient._id === ingredientsConstructor.bun ? 1 : 
@@ -27,38 +26,40 @@ function Ingredient({ingredient}) {
     }
   }, [ingredient._id, ingredient.type]);
   
-  const openModalIngredientDetails = () => {
-    dispatch ({
-      type: ADD_INGREDIENT_DETAILS,
-      ingredient
-    })
-    dispatch(openModalActionCreator('ingredientDetails'));
-  }
+  
 
   return (
-    <li 
-      className={styles.ingreient} 
-      id={ingredient.id} 
-      onClick={openModalIngredientDetails}
-      ref={dragRef}
-    >
-      <img 
-        src={ingredient.image} 
-        alt={`Иконка ${ingredient.name}`} 
-        className={`mb-2 ${styles.image}`}
-        ref={dragPreviewRef}
-      />
-      {number !== 0 && (<Counter count={number} size="default"/>)}
-      <div className={`mb-2 ${styles.prise}`}>
-        <p className={`text text_type_digits-default mr-2 ${styles.priseText}`}>
-          {ingredient.price}
+  <Link to={{
+                pathname: `/ingredients/${ingredient._id}`,
+                state: {
+                          background: location,
+                          ingredient
+                        }
+              }}
+          className={styles.link}>
+      <li 
+        className={styles.ingreient} 
+        id={ingredient.id} 
+        ref={dragRef}
+      >
+        <img 
+          src={ingredient.image} 
+          alt={`Иконка ${ingredient.name}`} 
+          className={`mb-2 ${styles.image}`}
+          ref={dragPreviewRef}
+        />
+        {number !== 0 && (<Counter count={number} size="default"/>)}
+        <div className={`mb-2 ${styles.prise}`}>
+          <p className={`text text_type_digits-default mr-2 ${styles.priseText}`}>
+            {ingredient.price}
+          </p>
+          <CurrencyIcon type="primary"/>
+        </div>
+        <p className={`text text_type_main-default ${styles.description}`}>
+          {ingredient.name}
         </p>
-        <CurrencyIcon type="primary"/>
-      </div>
-      <p className={`text text_type_main-default ${styles.description}`}>
-        {ingredient.name}
-      </p>
-    </li>
+        </li>
+    </Link>
   )
 }
 

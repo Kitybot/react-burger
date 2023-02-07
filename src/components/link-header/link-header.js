@@ -19,8 +19,8 @@ function LinkHeader(props) {
   };
 
   return(
-    <a 
-      href="#" 
+    <Link 
+      to={props.to}
       className={`pr-5 pl-5 ${styles.link}`} 
       onMouseEnter={changeIsHoverTrue}
       onMouseLeave={changeIsHoverFalse}
@@ -30,7 +30,7 @@ function LinkHeader(props) {
         styles.active : styles.inactive}`}>
         {props.children}
       </p>
-    </a>
+    </Link>
   )
 }
 
@@ -40,6 +40,7 @@ LinkHeader.propTypes = {
   icon: PropTypes.element.isRequired,
   state: PropTypes.object.isRequired,
   changeIsHover: PropTypes.func.isRequired,
+  to: PropTypes.string.isRequired,
 }
 
 export default LinkHeader;

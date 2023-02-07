@@ -27,8 +27,7 @@ function BurgerConstructor() {
       if (!bunId && item._type !== 'bun') {
         dispatch(openModalActionCreator('error','Пожалуйста, выберите сначала булку.'));
       } else {
-        dispatch(addIngredientActionCreator(item)
-        );
+        dispatch(addIngredientActionCreator(item));
       }
     },
     collect: (monitor) => ({

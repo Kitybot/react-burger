@@ -1,20 +1,24 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styles from '../ingredient-detalis/ingredient-detalis.module.css';
+import { useLocation } from 'react-router-dom';
+import { ingredientType } from '../../utils/types';
+import PropTypes from 'prop-types';
 
-
-function IngredientDetails() {
-
+function IngredientDetails({ingredient, modal}) {
+  const location = useLocation();
+  const ingredientInStore = useSelector( state => state.ingredientDetails);
   const {image_large, 
          name, 
          calories, 
          proteins, 
          fat, 
-         carbohydrates} = useSelector( state => state.ingredientDetails);
+         carbohydrates} = ingredient ? ingredient : ingredientInStore;
+         window.history.replaceState(null, null, location.pathname);
 
   return(
     <>
-      <h2 className={`text text_type_main-large ${styles.title} mt-3`}>
+      <h2 className={`text text_type_main-large ${modal && styles.title} mt-3`}>
         Детали ингредиента
       </h2>
       <img 
@@ -60,5 +64,11 @@ function IngredientDetails() {
     </>
   )
 }
+IngredientDetails.defaultProps = {ingredient: null};
+
+IngredientDetails.propTypes = {
+  ingredient: ingredientType,
+  modal: PropTypes.bool
+};
 
 export default IngredientDetails;
