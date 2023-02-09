@@ -1,0 +1,12 @@
+.editProfileForm{
+    max-width: 480px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 64px) 56px;
+    gap: 24px;
+  }
+  
+  .buttonsContainer{
+    justify-self: end;
+  }
