@@ -1,11 +1,9 @@
-import styles from './editProfile.module.css';
-import './editProfile.css';
+import styles from './edit-Profile.module.css';
+import './edit-Profile.css';
 import { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Input, EmailInput, Button } from 
-  '@ya.praktikum/react-developer-burger-ui-components';
-import { requestAboutUser, 
-         requestWithAccessToken } from '../../services/actions/user';
+import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { requestAboutUser,  requestWithAccessToken } from '../../services/actions/user';
 import { getAccessTokenOutCookie } from '../../utils/utils';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
@@ -18,7 +16,6 @@ function EditProfile ({setIsRequestSuccessful}) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  //поле input name
   const [ nameValue, setNameValue] = useState(userName);
   const [ isInputNameActive, setIsInputNameActive ] = useState({disabled: true});
   const [ isErrorInName, setIsErrorInName ] = useState(false);
@@ -41,7 +38,7 @@ function EditProfile ({setIsRequestSuccessful}) {
     setIsInputNameActive({disabled: true});
   };
 
-  //поле input email
+
   const [valueEmail, setValueEmail] = useState(userEmail);
   const [ isErrorInEmail, setIsErrorInEmail ] = useState(false);
   useEffect(() => {
@@ -68,7 +65,6 @@ function EditProfile ({setIsRequestSuccessful}) {
     setValueEmail(e.target.value);
   }
 
-  //поле input password
   const [valuePassword, setValuePassword] = useState('123456');
   const [ isInputPasswordActive, setIsInputPasswordActive ] = useState({disabled: true});
   const [ isErrorInPassword, setIsErrorInPassword ] = useState(false);
@@ -93,7 +89,7 @@ function EditProfile ({setIsRequestSuccessful}) {
     setIsInputPasswordActive({disabled: true});
   };
 
-  //блокировка кнопки отправки формы при некорректности заполнения полей формы
+  
   const [isErrorInForm, setIsErrorInForm ] = useState({});
   useEffect(() => {
     if ((isErrorInName || isErrorInPassword || isErrorInEmail)) {
@@ -103,7 +99,7 @@ function EditProfile ({setIsRequestSuccessful}) {
     }
   }, [isErrorInName, isErrorInPassword, isErrorInEmail]);
 
-  //отслеживание начала редактирования профиля
+
   const [ isProfileEdit, setIsProfileEdit ] = useState(false);
   useEffect(() => {
     if (valueEmail !== userEmail || valuePassword !== '123456' || nameValue !== userName) {
@@ -111,7 +107,6 @@ function EditProfile ({setIsRequestSuccessful}) {
     }
   }, [valueEmail, valuePassword, nameValue]);
 
-  //функциональность кнопки отмена
   const clickСancel = (e) => {
     e.preventDefault();
     setValuePassword('123456');

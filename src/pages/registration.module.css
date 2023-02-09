@@ -1,0 +1,29 @@
+.main{
+    width: 100%;
+    max-width: 480px;
+    height: calc(100vh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding-bottom: 76px;
+  }
+  
+  .form{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 64px;
+    gap: 24px;
+    justify-items: center;
+  }
+  
+  .underForm{
+    display: flex;
+  }
+  
+  .link{
+    text-decoration: none;
+    color: var(--colors-interface-accent);
+  }

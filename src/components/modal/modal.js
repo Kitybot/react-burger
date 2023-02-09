@@ -42,7 +42,7 @@ function Modal({children, activeModal, closeModalWithDispatch}) {
           <div className={styles.closeIcon}>
             <CloseIcon 
               type="primary" 
-              onClick={() => closeModa()}
+              onClick={() => closeModal()}
             />
           </div>
           {children}

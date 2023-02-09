@@ -3,14 +3,12 @@ import styles from './link-header.module.css';
 import PropTypes from 'prop-types';
 
 function LinkHeader(props) {
-
   const changeIsHoverTrue = () => {
     props.changeIsHover({
       ...props.state,
       [props.children]: true,
     });
   };
-
   const changeIsHoverFalse = () => {
     props.changeIsHover({
       ...props.state,
