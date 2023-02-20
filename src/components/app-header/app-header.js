@@ -33,6 +33,7 @@ function AppHeader() {
                  />}
           state={isLinkHover}
           changeIsHover={toggleIsHover}
+          to='/'
           >
           Конструктор
         </LinkHeader>
@@ -43,6 +44,7 @@ function AppHeader() {
             "primary" : "secondary"}/>} 
           state={isLinkHover}
           changeIsHover={toggleIsHover}
+          to='/kjdsfhoifu'
           >
           Лента заказов
         </LinkHeader>
@@ -56,6 +58,7 @@ function AppHeader() {
             isLinkHover['Личный кабинет'] ? "primary" : "secondary"}/>}
           state={isLinkHover}
           changeIsHover={toggleIsHover}
+          to='/profile'
           >
           Личный кабинет
         </LinkHeader>

@@ -1,4 +1,4 @@
-import { OPEN_MODAL, CLOSE_MODAL } from '../actions/app';
+import { OPEN_MODAL, CLOSE_MODAL, CHANGE_ACTIVE_PAGE } from '../actions/app';
 
 const initialState = {
   activePage: 'constructor',
@@ -10,6 +10,11 @@ const initialState = {
 
 export const appReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CHANGE_ACTIVE_PAGE:
+      return {
+        ...state,
+        activePage: action.activePage,
+      };
     case CLOSE_MODAL:
       return {
         ...state,

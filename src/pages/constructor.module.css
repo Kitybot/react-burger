@@ -1,0 +1,8 @@
+.main{
+    height: calc(100% - var(--header-height));
+    width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

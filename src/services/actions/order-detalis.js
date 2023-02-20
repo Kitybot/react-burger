@@ -27,7 +27,7 @@ export const fetchUsersFailure = error => {
   };
 };
 
-export function sendOrder(setRequest, constructorIngredients) {
+export function sendOrder(setRequest, constructorIngredients, accessToken) {
   return function(dispatch) {
     setRequest({
       isActive: true,
@@ -39,7 +39,8 @@ export function sendOrder(setRequest, constructorIngredients) {
     fetch(`${baseUrl}orders`, {
         method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "authorization": "accessToken",
         },
         body: JSON.stringify({
           "ingredients": listIngredients

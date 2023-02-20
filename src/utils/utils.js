@@ -1,10 +1,54 @@
 export const baseUrl = 'https://norma.nomoreparties.space/api/';
 
-export function checkResponse (res) {
+export async function checkResponse (res) {
     if (!res.ok) {
-      return Promise.reject(` Неудачное обращение к серверу. Код ошибки: ${res.status}.`);
+      let message;
+      try {
+        const data = await res.json();
+        message = data.message ? 
+          `Код ошибки: ${res.status}. Ответ сервера: ${data.message}.` :
+          ` Неудачное обращение к серверу. Код ошибки: ${res.status}.`;
+      } catch (err) {
+        message = ` Неудачное обращение к серверу. Код ошибки: ${res.status}. 
+          Ошибка: ${err}`;
+      }
+      return Promise.reject(message);
     }
     return res.json();
+  }
+    export function setCookie(name, value, props) {
+      props = props || {};
+      let exp = props.expires;
+      if (typeof exp == 'number' && exp) {
+        const d = new Date();
+        d.setTime(d.getTime() + exp * 1000);
+        exp = props.expires = d;
+      }
+      if (exp && exp.toUTCString) {
+        props.expires = exp.toUTCString();
+      }
+      value = encodeURIComponent(value);
+      let updatedCookie = name + '=' + value;
+      for (const propName in props) {
+        updatedCookie += '; ' + propName;
+        const propValue = props[propName];
+        if (propValue !== true) {
+          updatedCookie += '=' + propValue;
+        }
+      }
+      document.cookie = updatedCookie;
+    }
+    
+    function getCookie(name) {
+      let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+    
+    export function getAccessTokenOutCookie() {
+      const token = 'Bearer ' + getCookie('accessToken');
+      return token;
+    }
 
-}
 

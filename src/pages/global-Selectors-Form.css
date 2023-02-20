@@ -1,0 +1,16 @@
+#form .input__container{
+    width: 100%;
+    position: relative;
+  }
+  
+  #form .input_size_default{
+    width: 100%;
+  }
+  
+  #form .input__error{
+    position: absolute;
+  }
+  
+  [name=button]{
+    width: fit-content;
+  }

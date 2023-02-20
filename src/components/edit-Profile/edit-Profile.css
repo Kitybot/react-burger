@@ -1,0 +1,13 @@
+#editProfil .input__container{
+    position: relative;
+    width: 100%;
+  }
+  
+  #editProfil .input_size_default{
+    width: 100%;
+  }
+  
+  #editProfil .input__error{
+    position: absolute;
+    z-index: 10;
+  }

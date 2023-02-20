@@ -1,0 +1,13 @@
+#menu button{
+    width: fit-content;
+    color: var(--text-inactive-color);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    padding: 23px 0 15px;
+    transition: var(--common-transition);
+  }
+  
+  #menu button:hover{
+    color: var(--text-primary-color)
+  }
