@@ -4,7 +4,7 @@ import styles from './order-Info.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useMemo } from 'react';
 import { timeString, countingPrice, getOrderStatus } from '../../utils/utils';
-import Loader from '../../images/Loader.gif';
+import Loader from '../../images/loader.gif';
 import PropTypes from 'prop-types';
 import { orderType } from '../../utils/types';
 

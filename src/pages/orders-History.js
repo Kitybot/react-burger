@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { changeActivePageActionCreator } from '../services/actions/app';
 import Loader from '../images/Loader.gif';
-import  { socketStartHistoryActionCreator, closeWsConnectionActionCreator } from '../services/actions/socket-Middleware';
+import  { socketStartHistoryActionCreator, 
+          closeWsConnectionActionCreator } from '../services/actions/socket-Middleware';
 
 function OrdersHistory() {
   const dispatch = useDispatch();

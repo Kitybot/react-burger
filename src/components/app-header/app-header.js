@@ -5,23 +5,19 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import LinkHeader from '../link-header/link-header';
 import { Link } from 'react-router-dom';
 
-
 function AppHeader() {
 
   const activePage = useSelector((state) => state.app.activePage)
-
   const [isLinkHover, setIsLinkHover] = useState({
                                                    'Конструктор': false,
                                                    'Лента заказов': false,
                                                    'Личный кабинет': false
                                                  });
-
   const toggleIsHover = (newState) => {
     setIsLinkHover({
       ...newState
     });
   }
-
   return (
     <header className={styles.header}>
       <nav className={styles.navigation}>
@@ -69,5 +65,4 @@ function AppHeader() {
     </header>
   );
 }
-
 export default AppHeader;

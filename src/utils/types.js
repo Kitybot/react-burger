@@ -10,7 +10,6 @@ export const orderType = PropTypes.shape({
   _id: PropTypes.string,
 });
 
-
 export const ingredientType = PropTypes.shape({
   _id: PropTypes.string,
   name: PropTypes.string,

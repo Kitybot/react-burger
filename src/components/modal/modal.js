@@ -35,14 +35,14 @@ function Modal({children, activeModal, closeModalWithDispatch}) {
 
   return ReactDOM.createPortal(
     ( <ModalOverlay closeModalClickOverlay={closeModalClickOverlay}>
-       <div className={` pl-10 pr-10 ${activeModal === 'orders' ? 'pt-15 pb-10' :'pt-10 pb-15'} 
+        <div className={` pl-10 pr-10 ${activeModal === 'orders' ? 'pt-15 pb-10' :'pt-10 pb-15'} 
                           ${styles.modal} 
                           ${activeModal && styles[activeModal]}
                         `}>
           <div className={styles.closeIcon}>
             <CloseIcon 
               type="primary" 
-              onClick={() => closeModal()}
+              onClick={() =>  closeModal()}
             />
           </div>
           {children}

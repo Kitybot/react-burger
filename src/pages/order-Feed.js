@@ -25,7 +25,6 @@ function OrderFeed() {
     }
   }, [dispatch, ingredients]);
 
- 
   const currentDate = new Date(new Date().toDateString());
   const ordersArray = useMemo(() => {
     return allOrders && allOrders.map((item) => {
@@ -43,9 +42,7 @@ function OrderFeed() {
     });
   }, [allOrders]);
 
-  
   const {pendingOrders, doneOrders} = useMemo(() => {
-   
     const lists = allOrders && allOrders.reduce((previousValue, item) => {
       if (item.status === 'done') {
         previousValue.doneOrders.push(<li className='text text_type_digits-default mb-2 mr-2' 
@@ -60,7 +57,6 @@ function OrderFeed() {
       }
       return previousValue;
     }, {pendingOrders: [], doneOrders: []});
-   
     function splitList (list) {
       return list.reduce((previousValue, item, index) => {
         if ( index % 10 === 0) {

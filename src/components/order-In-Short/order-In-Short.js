@@ -5,6 +5,13 @@ import { useMemo } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useRouteMatch, useLocation } from 'react-router-dom';
 import { timeString, countingPrice, getOrderStatus } from '../../utils/utils';
+import styles from './orderInShort.module.css';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { useMemo } from 'react';
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link, useRouteMatch, useLocation } from 'react-router-dom';
+import { timeString, countingPrice, getOrderStatus } from '../../utils/utils';
 
 function OrderInShort({ status, 
                         numberOrder, 
@@ -16,8 +23,10 @@ function OrderInShort({ status,
   const ingredients = useSelector(state => state.burgerIngredients);
   const location = useLocation();
 
+  
   const time = timeString(orderTime, currentDate);
 
+  
   function makeIngredientIcon(index, image, name, uuid, previousValue) {
     if (index <= 5) {
       const zIndex = idIngredients.length - index;
