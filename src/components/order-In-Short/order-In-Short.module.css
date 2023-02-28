@@ -1,0 +1,122 @@
+.container{
+    width: 100%;
+    min-height: 214px;
+    box-sizing: border-box;
+    border-radius: 40px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 
+                0px 0px 2px rgba(0, 0, 0, 0.06), 
+                0px 0px 1px rgba(0, 0, 0, 0.04);
+    background-color: var(--background);
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-template-columns: 100%;
+    row-gap: 24px;
+    overflow: hidden;
+  }
+  
+  .numberOrder{
+    grid-column-start: 1;
+    grid-row-start: 1;
+    justify-self: start;
+    z-index: 0;
+  }
+  
+  .orderTime{
+    grid-column-start: 1;
+    grid-row-start: 1;
+    justify-self: end;
+    z-index: 1;
+  }
+  
+  .nameAndStatus{
+    grid-column-start: 1;
+    grid-row-start: 2;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .burgerName{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  .image{
+    box-sizing: border-box;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 30px;
+    background-color: var(--background-alt);
+  }
+  
+  .imageContainer{
+    width: 64px;
+    height: 64px;
+    background-image: linear-gradient(to right, #801ab2, var(--colors-interface-accent));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    margin-left: -16px;
+  }
+  
+  .imageContainer:first-child{
+    margin-left: 0;
+  }
+  
+  .ingredientsCotnainer{
+    display: flex;
+    grid-column-start: 1;
+    grid-row-start: 3;
+    justify-self: start;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .priceContainer{
+    grid-column-start: 1;
+    grid-row-start: 3;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    background-color: inherit;
+  }
+  
+  .manyIngredients{
+    position: relative;
+  }
+  
+  .manyIngredients::before{
+    width: 60px;
+    height: 60px;
+    background-color: var(--background);
+    opacity: .6;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    content: '';
+    z-index: 100;
+    border-radius: 99px;
+  }
+  
+  .additionalIngredients{
+    position: absolute;
+    top: auto;
+    left: auto;
+    z-index: 101;
+  }
+  
+  .link{
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  
+  .doneColor{
+    color: var(--colors-interface-success);
+  }
+  
+  .cancellColor{
+    color: var(--colors-interface-error);
+  }

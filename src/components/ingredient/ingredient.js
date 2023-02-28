@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from './ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {ingredientType} from '../../utils/types';
@@ -9,7 +9,7 @@ import { Link, useLocation } from 'react-router-dom';
 function Ingredient({ingredient}) {
 
   const location = useLocation();
-  const ingredientsConstructor = useSelector( state => state.burgerConstructor)
+  const ingredientsConstructor = useSelector( state => state.burgerConstructor);
 
   const number = ingredient._id === ingredientsConstructor.bun ? 1 : 
     ingredientsConstructor.others.reduce(

@@ -165,7 +165,7 @@ function EditProfile ({setIsRequestSuccessful}) {
     <>
       <form name='editProfil' 
             id='editProfil' 
-            className={styles.editProfileForm}
+            className={`pt-30 pl-3 ${styles.editProfileForm}`}
             onSubmit={saveNewUserData}>
         <Input 
           name='name' 

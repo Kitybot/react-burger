@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import styles from './app-header.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import LinkHeader from '../link-header/link-header';
+import { Link } from 'react-router-dom';
 
 
 function AppHeader() {
@@ -44,12 +45,14 @@ function AppHeader() {
             "primary" : "secondary"}/>} 
           state={isLinkHover}
           changeIsHover={toggleIsHover}
-          to='/kjdsfhoifu'
+          to='/feed'
           >
           Лента заказов
         </LinkHeader>
       </nav>
-      <Logo />
+      <Link to='/'>
+        <Logo />
+      </Link>
       <nav className={styles.accountLink}>
         <LinkHeader 
           textColor={activePage === 'account' || isLinkHover['Личный кабинет'] ? 

@@ -1,0 +1,102 @@
+.image{
+    box-sizing: border-box;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 30px;
+    background-color: var(--background-alt);
+    z-index: 10;
+    margin: 2px;
+  }
+  
+  .status{
+    margin-bottom: 66px;
+  }
+  
+  .doneColor{
+    color: var(--colors-interface-success);
+  }
+  
+  .cancellColor{
+    color: var(--colors-interface-error);
+  }
+  
+  .list{
+    list-style: none;
+    margin-top: 0;
+    padding: 0;
+    height: 304px;
+    overflow-y: auto;
+    scrollbar-color: #2F2F37 #8585AD;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+  }
+  
+  .list::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .list::-webkit-scrollbar-track {
+    background: #2F2F37;
+  }
+  
+  .list::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+  }
+  
+  .name{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  
+  
+  .ingredient{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .ingredient:last-child{
+    margin-bottom: 0;
+  }
+  
+  .ingredient::before{
+    width: 64px;
+    height: 64px;
+    background-image: linear-gradient(to right, #801ab2, var(--colors-interface-accent));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+  }
+  
+  .container{
+    display: flex;
+    align-items: center;
+    max-width: 435px;
+  }
+  
+  .price{
+    display: flex;
+    align-items: center;
+  }
+  
+  .timePrice{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .ingredientPrice{
+    white-space: nowrap;
+  }
+  
+  .number{
+    align-self: center;
+  }

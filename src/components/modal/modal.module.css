@@ -13,19 +13,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+    z-index: 1000;
+}
   
-  .closeIcon{
-    position: absolute;
-    top: 58px;
-    right: 39px;
-    cursor: pointer;
-  }
+.closeIcon{
+  position: absolute;
+  top: 58px;
+  right: 39px;
+  cursor: pointer;
+}
   
-  .orderDetails{
-    height: 718px;
-  }
+.orderDetails{
+  height: 718px;
+}
   
-  .ingredientDetails{
-    min-height: 538px;
-  }
+.ingredientDetails{
+  min-height: 538px;
+}
+
+.orders{
+  align-items: initial;
+}

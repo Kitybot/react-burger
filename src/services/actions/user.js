@@ -29,7 +29,7 @@ export const requestAboutUser = ({requestOptions = {},
       }
       if (data.accessToken && data.refreshToken) {
         const accessTokenWithoutText = data.accessToken.split('Bearer ')[1];
-        setCookie('accessToken', accessTokenWithoutText);
+        setCookie('accessToken', accessTokenWithoutText, {path: '/'});
         localStorage.setItem('refreshToken', data.refreshToken);
       }
       if (setIsRequestSuccessful) {

@@ -5,6 +5,8 @@ import { ingredientDetailsReducer } from './ingredient-detalis';
 import { orderDetailsReducer } from './order-detalis';
 import { appReducer } from './app';
 import { userReducer } from './user';
+import { ordersReducer } from './orders';
+import { socketMiddlewareReducer } from './socketMiddleware';
 
 export const rootReducer = combineReducers({
     app: appReducer,
@@ -13,4 +15,6 @@ export const rootReducer = combineReducers({
     ingredientDetails: ingredientDetailsReducer,
     orderDetails: orderDetailsReducer,
     user: userReducer,
+    orders: ordersReducer,
+    wsConnect: socketMiddlewareReducer,
 });

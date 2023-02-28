@@ -1,5 +1,16 @@
 import PropTypes from 'prop-types';
 
+export const orderType = PropTypes.shape({
+  createdAt: PropTypes.string,
+  ingredients: PropTypes.arrayOf(PropTypes.string),
+  name: PropTypes.string,
+  number: PropTypes.number,
+  status: PropTypes.string,
+  updatedAt: PropTypes.string,
+  _id: PropTypes.string,
+});
+
+
 export const ingredientType = PropTypes.shape({
   _id: PropTypes.string,
   name: PropTypes.string,
