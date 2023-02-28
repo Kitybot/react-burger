@@ -15,11 +15,11 @@ import RouteNotAuthorized from '../route-Not-Authorized/route-Not-Authorized';
 import DetailsIngredient from '../../pages/detalis-ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-detalis/ingredient-detalis';
-import OrderFeed from '../../pages/orderFeed';
-import FeedOrderInfo from '../../pages/feedOrderInfo';
-import OwnOrderInfo from '../../pages/ownOrderInfo';
-import OrderInfo from '../orderInfo/orderInfo';
-import { getIngredients } from '../../services/actions/burgerIngredients';
+import OrderFeed from '../../pages/order-Feed';
+import FeedOrderInfo from '../../pages/feed-Order-Info';
+import OwnOrderInfo from '../../pages/own-OrderInfo';
+import OrderInfo from '../order-Info/order-Info';
+import { getIngredients } from '../../services/actions/burger-ingredient';
 
 const App = () => {
   const burgerIngredients = useSelector(state => state.burgerIngredients);

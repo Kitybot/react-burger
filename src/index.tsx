@@ -8,8 +8,8 @@ import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
-import { socketMiddleware } from './services/middleware/socketMiddleware';
-import {  WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_CONNECTION_CLOSED, WS_CONNECTION_BREAK, WS_CONNECTION_ERROR } from './services/actions/socketMiddleware';
+import { socketMiddleware } from './services/middleware/socket-Middleware';
+import {  WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_CONNECTION_CLOSED, WS_CONNECTION_BREAK, WS_CONNECTION_ERROR } from './services/actions/socket-Middleware';
 import { SAVE_ALL_ORDERS } from './services/actions/orders';
 
 const root = ReactDOM.createRoot(

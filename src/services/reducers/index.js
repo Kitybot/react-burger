@@ -6,7 +6,7 @@ import { orderDetailsReducer } from './order-detalis';
 import { appReducer } from './app';
 import { userReducer } from './user';
 import { ordersReducer } from './orders';
-import { socketMiddlewareReducer } from './socketMiddleware';
+import { socketMiddlewareReducer } from './socket-Middleware';
 
 export const rootReducer = combineReducers({
     app: appReducer,

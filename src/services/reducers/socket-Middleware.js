@@ -1,7 +1,7 @@
 import {  WS_CONNECTION_START, 
     WS_CONNECTION_SUCCESS,
     WS_CONNECTION_CLOSED, 
-    WS_CONNECTION_ERROR } from '../actions/socketMiddleware';
+    WS_CONNECTION_ERROR } from '../actions/socket-Middleware';
 
 const initialState = {
 wsStatus: 'disconnect',
