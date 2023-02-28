@@ -16,10 +16,8 @@ function OrderInShort({ status,
   const ingredients = useSelector(state => state.burgerIngredients);
   const location = useLocation();
 
-  
   const time = timeString(orderTime, currentDate);
 
-  
   function makeIngredientIcon(index, image, name, uuid, previousValue) {
     if (index <= 5) {
       const zIndex = idIngredients.length - index;
@@ -46,14 +44,11 @@ function OrderInShort({ status,
   }
   const {burgerPrice, burgerIngredients} = useMemo(() => {
     const iconsAndPrice = ingredients ? idIngredients.reduce((previousValue, item, index) => {
-      const ingredient = ingredients.find((i) => {
-        return item === i._id
-      })
-      countingPrice(ingredient.type, ingredient.price, previousValue);
+      countingPrice(ingredients.type, ingredients.price, previousValue);
       makeIngredientIcon( index, 
-                          ingredient.image, 
-                          ingredient.name,
-                          ingredient.uuid,
+                          ingredients.image, 
+                          ingredients.name,
+                          ingredients.uuid,
                           previousValue);
       return previousValue;
     }, {burgerPrice: 0, burgerIngredients: []}) : {burgerPrice: 0, burgerIngredients: []};
