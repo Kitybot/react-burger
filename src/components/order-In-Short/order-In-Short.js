@@ -44,12 +44,17 @@ function OrderInShort({ status,
   }
   const {burgerPrice, burgerIngredients} = useMemo(() => {
     const iconsAndPrice = ingredients ? idIngredients.reduce((previousValue, item, index) => {
-      countingPrice(ingredients.type, ingredients.price, previousValue);
+      const ingredient = ingredients.find((i) => {
+        return item === i._id
+      })
+      if (ingredient) {
+      countingPrice(ingredient.type, ingredient.price, previousValue);
       makeIngredientIcon( index, 
-                          ingredients.image, 
-                          ingredients.name,
-                          ingredients.uuid,
+                          ingredient.image, 
+                          ingredient.name,
+                          ingredient.uuid,
                           previousValue);
+      }
       return previousValue;
     }, {burgerPrice: 0, burgerIngredients: []}) : {burgerPrice: 0, burgerIngredients: []};
     return iconsAndPrice;
