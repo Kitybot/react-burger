@@ -47,14 +47,12 @@ function OrderInShort({ status,
       const ingredient = ingredients.find((i) => {
         return item === i._id
       })
-      if (ingredient) {
       countingPrice(ingredient.type, ingredient.price, previousValue);
       makeIngredientIcon( index, 
                           ingredient.image, 
                           ingredient.name,
                           ingredient.uuid,
                           previousValue);
-      }
       return previousValue;
     }, {burgerPrice: 0, burgerIngredients: []}) : {burgerPrice: 0, burgerIngredients: []};
     return iconsAndPrice;
