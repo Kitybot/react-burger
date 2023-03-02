@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import { burgerConstructorReducer } from './burger-constructor';
 import { burgerIngredientsReducer } from './burger-ingredient';
+import { burgerConstructorReducer } from './burger-constructor';
 import { ingredientDetailsReducer } from './ingredient-detalis';
 import { orderDetailsReducer } from './order-detalis';
 import { appReducer } from './app';
 import { userReducer } from './user';
+import { ordersReducer } from './orders';
+import { socketMiddlewareReducer } from './socket-Middleware';
 
 export const rootReducer = combineReducers({
     app: appReducer,
@@ -13,4 +15,6 @@ export const rootReducer = combineReducers({
     ingredientDetails: ingredientDetailsReducer,
     orderDetails: orderDetailsReducer,
     user: userReducer,
+    orders: ordersReducer,
+    wsConnect: socketMiddlewareReducer,
 });

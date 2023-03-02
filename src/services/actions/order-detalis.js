@@ -40,7 +40,7 @@ export function sendOrder(setRequest, constructorIngredients, accessToken) {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
-          "authorization": "accessToken",
+          "authorization": accessToken,
         },
         body: JSON.stringify({
           "ingredients": listIngredients

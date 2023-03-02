@@ -31,5 +31,5 @@
   }
   
   .content{
-    flex-grow: 2;
+    width: calc(100% - 368px);
   }

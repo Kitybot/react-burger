@@ -5,10 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import BurgerIngredients from '../components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../components/burger-constructor/burger-constructor';
 import Modal from '../components/modal/modal';
-import { closeModal,changeActivePageActionCreator } from '../services/actions/app';
+import { closeModal, changeActivePageActionCreator } from '../services/actions/app';
 import OrderDetails from '../components/order-details/order-details';
 import ErrorMessage from '../components/error-massege/error-massege';
-import { getIngredients } from '../services/actions/burger-ingredient';
 import styles from './constructor.module.css';
 
 export default function Constructor() {
@@ -21,9 +20,6 @@ export default function Constructor() {
   }));
 
   useEffect( () => {
-    if (!ingredients) {
-      dispatch(getIngredients());
-    }
     dispatch(changeActivePageActionCreator('constructor'));
   } , [dispatch]);
 
