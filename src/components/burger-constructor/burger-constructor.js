@@ -20,11 +20,18 @@ function BurgerConstructor() {
   }));
   const dispatch = useDispatch();
 
+
   
   const [{canAcceptIngredient}, ingredientDropTargetRef] = useDrop({
     accept: 'ingredient',
     drop: (item) => {
       if (!bunId && item._type !== 'bun') {
+        if (!bunId) {
+          const message = `В Вашем заказе нет ни одного ингредиента. 
+            Составте, пожалуйста, бургер и мы с радостью примем Ваш заказ.`;
+          dispatch(openModalActionCreator('error', message));
+          return
+        }
         dispatch(openModalActionCreator('error','Пожалуйста, выберите сначала булку.'));
       } else {
         dispatch(addIngredientActionCreator(item));
