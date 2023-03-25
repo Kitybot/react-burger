@@ -1,6 +1,14 @@
 import { OPEN_MODAL, CLOSE_MODAL, CHANGE_ACTIVE_PAGE } from '../actions/app';
+import { TAllActions } from '../actions/unionIfActions';
 
-const initialState = {
+interface IAppState {
+  activePage: string;
+  isModalActive: {
+    isModalActive: string;
+    message: string;
+  };
+}
+const initialState: IAppState = {
   activePage: 'constructor',
   isModalActive: {
     isModalActive: '',
@@ -8,7 +16,7 @@ const initialState = {
   }
 };
 
-export const appReducer = (state = initialState, action) => {
+export const appReducer = (state = initialState, action: TAllActions): IAppState => {
   switch (action.type) {
     case CHANGE_ACTIVE_PAGE:
       return {

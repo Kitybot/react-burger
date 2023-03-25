@@ -2,14 +2,21 @@ import {  WS_CONNECTION_START,
     WS_CONNECTION_SUCCESS,
     WS_CONNECTION_CLOSED, 
     WS_CONNECTION_ERROR } from '../actions/socket-Middleware';
+import { TAllActions } from '../actions/unionIfActions';
 
-const initialState = {
+interface ISocketMiddlewareState {
+    wsStatus: string;
+    socket: WebSocket | null;
+    error: Event | null;
+  }
+  const initialState: ISocketMiddlewareState = {
 wsStatus: 'disconnect',
 socket: null,
 error: null
 };
 
-export const socketMiddlewareReducer = (state = initialState, action) => {
+export const socketMiddlewareReducer = (state = initialState, action: TAllActions)
+  : ISocketMiddlewareState => {
 switch (action.type) {
 case WS_CONNECTION_CLOSED:
 return {...state, wsStatus: 'disconnect', socket: null}

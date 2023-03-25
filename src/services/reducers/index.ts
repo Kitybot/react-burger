@@ -18,3 +18,4 @@ export const rootReducer = combineReducers({
     orders: ordersReducer,
     wsConnect: socketMiddlewareReducer,
 });
+export type TRootState = ReturnType<typeof rootReducer>;

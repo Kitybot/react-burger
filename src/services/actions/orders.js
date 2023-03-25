@@ -1,2 +1,0 @@
-export const SAVE_ALL_ORDERS = 'SAVE_ALL_ORDERS';
-export const ERASE_USER_ORDERS = 'ERASE_USER_ORDERS';

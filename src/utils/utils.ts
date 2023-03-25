@@ -1,11 +1,11 @@
 export const baseUrl = 'https://norma.nomoreparties.space/api/';
 export const wsBaseUrl = 'wss://norma.nomoreparties.space/orders';
 
-export async function checkResponse (res) {
+export async function checkResponse (res: Response) {
     if (!res.ok) {
-      let message;
+      let message: string;
       try {
-        const data = await res.json();
+        const data: {message?: string} = await res.json();
         message = data.message ? 
           `Код ошибки: ${res.status}. Ответ сервера: ${data.message}.` :
           ` Неудачное обращение к серверу. Код ошибки: ${res.status}.`;
@@ -17,7 +17,12 @@ export async function checkResponse (res) {
     }
     return res.json();
   }
-export function setCookie(name, value, props) {
+export function setCookie(name: string,
+                          value: string,
+                          props:{  [name: string]: any; 
+                            path?: string; 
+                            "max-age"?: number; 
+                            expires?: any; } ) {
   props = props || {};
   let exp = props.expires;
   if (typeof exp == 'number' && exp) {
@@ -40,7 +45,7 @@ export function setCookie(name, value, props) {
   document.cookie = updatedCookie;
 }
 
-export function getCookie(name) {
+export function getCookie(name: string) {
   let matches = document.cookie.match(new RegExp(
     "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
   ));
@@ -51,11 +56,11 @@ export function getAccessTokenOutCookie() {
   return token;
 }
 
-export const timeString = (orderTime, currentDate) => {
+export const timeString = (orderTime: string, currentDate: Date) => {
   const [orderDay, other] = orderTime.split('T');
   const orderDate =  new Date(new Date(orderDay).toDateString());
-  const pastDays = (currentDate - orderDate) / 86400000;
-  let days;
+  const pastDays = (currentDate.getTime() - orderDate.getTime()) / 86400000;
+  let days: string;
   switch (pastDays) {
     case 0 :
       days = 'Сегодня,';
@@ -82,7 +87,11 @@ export const timeString = (orderTime, currentDate) => {
   return `${days} ${time} ${timeZone}`;
 };
 
-export function countingPrice(type, price, previousValue) {
+export function countingPrice(type: string,
+                              price: number,
+                              previousValue: {  burgerPrice: any; 
+                                burgerIngredients?: JSX.Element[]; 
+                                liste?: JSX.Element[]; }) {
   if (type === "bun") {
     previousValue.burgerPrice += price * 2;
   } else {
@@ -90,7 +99,7 @@ export function countingPrice(type, price, previousValue) {
   }
 }
 
-export const getOrderStatus = (status) => {
+export const getOrderStatus = (status: string | undefined) => {
   switch (status) {
     case 'created':
       return 'Создан';
