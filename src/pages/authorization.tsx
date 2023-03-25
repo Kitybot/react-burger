@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { EmailInput, 
          PasswordInput, 
          Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../utils/hooks';
 import styles from './authorization.module.css';
 import './global-Selectors-Form.css';
 import Modal from '../components/modal/modal';
@@ -18,18 +18,18 @@ function Authorization() {
     message: state.app.isModalActive.message,
   }));
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<{from: string}>();
 
   const closeModalWithDispatch = () => dispatch(closeModal(isModalActive));
 
   const [ emailValue, setEmailValue ] = useState('');
   const [ errorEmailValue, setErrorEmailValue ] = useState(false);
-  const onChangeEmail = (e) => {
-    setEmailValue(e.target.value);
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmailValue(e.currentTarget.value);
   };
-  const isErrorEmailValue = (divEmail) => {
+  const isErrorEmailValue = (divEmail: HTMLElement | null) => {
     setTimeout( () => {
-      if (divEmail.classList.contains("input_status_error")) {
+      if (divEmail && divEmail.classList.contains("input_status_error")) {
         setErrorEmailValue(true);
       } else {
         setErrorEmailValue(false);
@@ -39,12 +39,12 @@ function Authorization() {
 
   const [ passwordValue, setPasswordValue ] = useState('');
   const [ errorPasswordValue, setErrorPasswordValue ] = useState(false);
-  const onChangePassword = (e) => {
-    setPasswordValue(e.target.value);
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPasswordValue(e.currentTarget.value);
   };
-  const isErrorPasswordValue = (divPassword) => {
+  const isErrorPasswordValue = (divPassword: HTMLElement | null) => {
     setTimeout( () => {
-      if (divPassword.classList.contains("input_status_error")) {
+      if (divPassword && divPassword.classList.contains("input_status_error")) {
         setErrorPasswordValue(true);
       } else {
         setErrorPasswordValue(false);
@@ -52,7 +52,7 @@ function Authorization() {
     }, 100);
   };
 
-  const [isErrorInForm, setIsErrorInForm ] = useState({ disabled: true });
+  const [isErrorInForm, setIsErrorInForm ] = useState<{disabled?: boolean}>({ disabled: true });
   useEffect(() => {
     if (emailValue && !errorEmailValue && passwordValue && !errorPasswordValue) {
       setIsErrorInForm({});
@@ -65,7 +65,7 @@ function Authorization() {
                                                                       value: undefined,
                                                                       message: '',
                                                                     });
-  const submit = (e) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(openModalActionCreator('error', 'Осуществляется авторизация...'));
     dispatch(requestAboutUser({
@@ -96,24 +96,30 @@ function Authorization() {
     }
   }, [isRequestSuccessful]);
 
-  const form = useRef();
+  const form = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    const inputEmail = form.current.elements.email;
-    const inputPassword = form.current.elements.password;
-    const divEmail = form.current.querySelector('.input_type_email');
-    const divPassword = form.current.querySelector('.input_type_password');
-    inputEmail.addEventListener('blur', (() => {isErrorEmailValue(divEmail)}));
-    inputEmail.addEventListener('focus', (() => {setErrorEmailValue(false)}));
-    inputPassword.addEventListener('blur', (() => {isErrorPasswordValue(divPassword)}));
-    inputPassword.addEventListener('focus', (() => {setErrorPasswordValue(false)}));
-    return () => {
-      inputEmail.removeEventListener('blur', 
-        (() => {isErrorEmailValue(divEmail)}));
-      inputEmail.removeEventListener('focus', (() => {setErrorEmailValue(false)}));
-      inputPassword.removeEventListener('blur', 
-        (() => {isErrorPasswordValue(divPassword)}));
-      inputPassword.removeEventListener('focus', (() => {setErrorPasswordValue(false)}));
+    const htmlElements: {[name: string]: HTMLElement | null} = {};
+    if (form.current) {
+      htmlElements.inputEmail = form.current.querySelector("[name='email']");
+      htmlElements.inputPassword = form.current.querySelector("[name='password']");
+      htmlElements.divEmail = form.current && form.current.querySelector('.input_type_email');
+      htmlElements.divPassword = form.current.querySelector('.input_type_password');
+    }
+    const { inputEmail, inputPassword, divEmail, divPassword} = htmlElements
+    if (inputEmail && inputPassword) {
+      inputEmail.addEventListener('blur', (() => {isErrorEmailValue(divEmail)}));
+      inputEmail.addEventListener('focus', (() => {setErrorEmailValue(false)}));
+      inputPassword.addEventListener('blur', (() => {isErrorPasswordValue(divPassword)}));
+      inputPassword.addEventListener('focus', (() => {setErrorPasswordValue(false)}));
+      return () => {
+        inputEmail.removeEventListener('blur', 
+          (() => {isErrorEmailValue(divEmail)}));
+        inputEmail.removeEventListener('focus', (() => {setErrorEmailValue(false)}));
+        inputPassword.removeEventListener('blur', 
+          (() => {isErrorPasswordValue(divPassword)}));
+        inputPassword.removeEventListener('focus', (() => {setErrorPasswordValue(false)}));
+      }
     }
   }, []);
 
@@ -137,6 +143,7 @@ function Authorization() {
           onChange={onChangePassword}
         />
         <Button 
+          htmlType='submit'
           type='primary' 
           size='medium' 
           id='buttonRegister'

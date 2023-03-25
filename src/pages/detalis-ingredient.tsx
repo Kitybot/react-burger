@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../utils/hooks';
 import { useParams } from 'react-router-dom';
 import IngredientDetails from '../components/ingredient-detalis/ingredient-detalis';
 import { getIngredients } from '../services/actions/burger-ingredient';
@@ -16,7 +16,7 @@ function DetailsIngredient() {
   }, []);
 
 
-  const {_id} = useParams();
+  const {_id} = useParams<{_id: string}>();
   let ingredient;
   if (ingredients) {
     ingredient = ingredients.find(item => {

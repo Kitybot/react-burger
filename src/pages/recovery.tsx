@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../utils/hooks';
 import { EmailInput,
          Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory, useLocation } from 'react-router-dom';
@@ -17,25 +17,25 @@ function Recovery() {
     message: state.app.isModalActive.message,
   }));
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<{}>();
 
   const closeModalWithDispatch = () => dispatch(closeModal(isModalActive));
 
   const [ emailValue, setEmailValue ] = useState('');
   const [ errorEmailValue, setErrorEmailValue ] = useState(false);
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailValue(e.target.value);
   };
-  const isErrorEmailValue = (divEmail) => {
+  const isErrorEmailValue = (divEmail: HTMLElement | null) => {
     setTimeout( () => {
-      if (divEmail.classList.contains("input_status_error")) {
+      if (divEmail && divEmail.classList.contains("input_status_error")) {
         setErrorEmailValue(true);
       } else {
         setErrorEmailValue(false);
       }
     }, 100);
   }
-  const [isErrorInForm, setIsErrorInForm ] = useState({ disabled: true });
+  const [isErrorInForm, setIsErrorInForm ] = useState<{disabled?: boolean}>({ disabled: true });
   useEffect(() => {
     if (emailValue && !errorEmailValue) {
       setIsErrorInForm({});
@@ -48,7 +48,7 @@ function Recovery() {
                                                                       value: undefined,
                                                                       message: '',
                                                                     });
-  const submit = (e) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(openModalActionCreator('error', `Отправляем запрос на восстановление доступа 
     к аккаунту...`));
@@ -86,17 +86,23 @@ function Recovery() {
     }
   }, [isRequestSuccessful]);
 
-  const form = useRef();
+  const form = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    const inputEmail = form.current.elements.email;
-    const divEmail = form.current.querySelector('.input_type_email');
-    inputEmail.addEventListener('blur', (() => {isErrorEmailValue(divEmail)}));
-    inputEmail.addEventListener('focus', (() => {setErrorEmailValue(false)}));
-    return () => {
-      inputEmail.removeEventListener('blur', 
-        (() => {isErrorEmailValue(divEmail)}));
-      inputEmail.removeEventListener('focus', (() => {setErrorEmailValue(false)}));
+    const htmlElements: {[name: string]: HTMLElement | null} = {};
+    if (form.current) {
+      htmlElements.inputEmail = form.current.querySelector("[name='email']");
+      htmlElements.divEmail = form.current.querySelector('.input_type_email');
+    }
+    const { inputEmail, divEmail } = htmlElements;
+    if (inputEmail) {
+      inputEmail.addEventListener('blur', (() => {isErrorEmailValue(divEmail)}));
+      inputEmail.addEventListener('focus', (() => {setErrorEmailValue(false)}));
+      return () => {
+        inputEmail.removeEventListener('blur', 
+          (() => {isErrorEmailValue(divEmail)}));
+        inputEmail.removeEventListener('focus', (() => {setErrorEmailValue(false)}));
+      }
     }
   }, []);
 
@@ -115,6 +121,7 @@ function Recovery() {
           onChange={onChangeEmail}
         />
         <Button 
+          htmlType='submit'
           type='primary' 
           size='medium' 
           id='buttonRegister'

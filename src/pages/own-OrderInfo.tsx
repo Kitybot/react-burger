@@ -1,5 +1,5 @@
 import OrderInfo from "../components/order-Info/order-Info";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../utils/hooks';
 import styles from './own-OrderInfo.module.css';
 import { useEffect } from 'react';
 import Loader from '../images/Loader.gif';

@@ -1,11 +1,11 @@
 import styles from './orders-History.module.css';
 import OrderInShort from '../components/order-In-Short/order-In-Short';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../utils/hooks';
 import { useEffect } from 'react';
 import { changeActivePageActionCreator } from '../services/actions/app';
 import Loader from '../images/Loader.gif';
 import  { socketStartHistoryActionCreator, 
-          closeWsConnectionActionCreator } from '../services/actions/socket-Middleware';
+          breakWsConnectionActionCreator } from '../services/actions/socket-Middleware';
 
 function OrdersHistory() {
   const dispatch = useDispatch();
@@ -19,12 +19,12 @@ function OrdersHistory() {
       dispatch(socketStartHistoryActionCreator())
     }
     return () => {
-      dispatch(closeWsConnectionActionCreator());
+      dispatch(breakWsConnectionActionCreator());
     }
   }, [dispatch, ingredients]);
 
   const currentDate = new Date(new Date().toDateString());
-  const cardsUserOrders = userOrders.map((item) => {
+  const cardsUserOrders = userOrders.length !== 0 && userOrders.map((item) => {
     const { number, createdAt, name, ingredients, status, _id } = item;
     return (
       <OrderInShort numberOrder={number} 
