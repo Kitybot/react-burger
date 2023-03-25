@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 import styles from './burger-constructor.module.css';
 import { CurrencyIcon, Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { DELETE_OTHER_INGREDIENT, MOVING_INGREDIENT, addIngredientActionCreator } from '../../services/actions/burger-constructor';
-import { COUNT_PRICE_BURGER } from '../../services/actions/order-detalis';
+import { addIngredientActionCreator, movingIngredientActionCreator, deleteIngredientActionCreator } from '../../services/actions/burger-constructor';
+import { countPriceBurgerActionCreator } from '../../services/actions/order-detalis';
 import { openModalActionCreator } from '../../services/actions/app';
 import { useDrop } from "react-dnd";
 import OtherIngredientConstructor from '../other-ingredient-constructor/other-ingredient-constructor';
+import { TIgredient, TOtherIgredient } from '../../utils/types';
 
 function BurgerConstructor() {
 
@@ -24,7 +25,7 @@ function BurgerConstructor() {
   
   const [{canAcceptIngredient}, ingredientDropTargetRef] = useDrop({
     accept: 'ingredient',
-    drop: (item) => {
+    drop: (item: {_id: string, _type: string,}) => {
       if (!bunId && item._type !== 'bun') {
         if (!bunId) {
           const message = `В Вашем заказе нет ни одного ингредиента. 
@@ -42,9 +43,9 @@ function BurgerConstructor() {
       })
   }, [bunId]);
 
-  const openModalOrderDetails = () => {
+  const openModalOrderDetails = (): void => {
     if (!bunId) {
-      const message = `В Вашем заказе нет ни одного ингредиента. 
+      const message: string = `В Вашем заказе нет ни одного ингредиента. 
         Составте, пожалуйста, бургер и мы с радостью примем Ваш заказ.`;
       dispatch(openModalActionCreator('error', message));
       return
@@ -58,47 +59,44 @@ function BurgerConstructor() {
     dispatch(openModalActionCreator('orderDetails'));
   }
 
-  const bun = React.useMemo( () => {
-    return ingredients.find(item => {
+  const bun = React.useMemo<TIgredient | undefined | null>( () => {
+    return ingredients && ingredients.find(item => {
       return item._id === bunId;
     });
   },[bunId, ingredients]);
-  const othersIngredients = React.useMemo( () => {
+  const othersIngredients = React.useMemo<Array<TOtherIgredient | undefined | null>>( () => {
     return othersId.map((item) => {
-      const ingredient = {...ingredients.find( meal => {
+      const ingredient = ingredients && {...ingredients.find( meal => {
         return meal._id === item.id;
       })};
-      ingredient.uuid = item.uuid;
+      if (ingredient !== null) {
+        ingredient.uuid = item.uuid;
+      }
       return ingredient;
     });
   }, [othersId, ingredients]);
 
 
   useEffect(() => {
-    const bunPrice = bun === undefined ? 0 : bun.price;
+    const bunPrice = (bun === undefined || bun === null) ? 0 : bun.price;
     const burgerPrice = bunPrice * 2 + othersIngredients.reduce( 
       (previousValue, item) => {
-        return previousValue + item.price;
+        return previousValue + (item && item.price ? item.price : 0);
       }, 0);
-    dispatch({
-      type: COUNT_PRICE_BURGER,
-      price: burgerPrice,
-    })
+    dispatch(countPriceBurgerActionCreator(burgerPrice));
   }, [bun, othersIngredients, dispatch]);
 
-  const removeIngredient = (e) => {
-    dispatch({
-      type: DELETE_OTHER_INGREDIENT,
-      index: e.target.closest('li').getAttribute('index'),
-    });
+  const removeIngredient = (e?: React.MouseEvent<SVGAElement>): void => {
+    const ingredientInConstructor = e && e.currentTarget.closest('li');
+    const index = ingredientInConstructor && 
+      Number(ingredientInConstructor.getAttribute('id'));
+    if (index || index === 0) {
+      dispatch(deleteIngredientActionCreator(index));
+    }
   };
 
-  const moveIngredient = (indexOfMoved, indexOfRecipient) => {
-    dispatch({
-      type: MOVING_INGREDIENT,
-      indexOfMoved,
-      indexOfRecipient,
-    })
+  const moveIngredient = (indexOfMoved: number, indexOfRecipient: number): void => {
+    dispatch(movingIngredientActionCreator(indexOfMoved, indexOfRecipient))
   };
 
   return (
@@ -112,9 +110,13 @@ function BurgerConstructor() {
         <ul className={`${othersIngredients.length !== 0 && "mt-4 mb-4 pr-4"} 
         ${styles.othersIngredients}`}>
           {othersIngredients.map((item, index) => {
-            return (<OtherIngredientConstructor item={item} index={index} 
-              removeIngredient={removeIngredient} moveIngredient={moveIngredient} 
-              key={item.uuid}/>)
+            return item && (
+              <OtherIngredientConstructor item={item} 
+                                          index={index} 
+                                          removeIngredient={removeIngredient} 
+                                          moveIngredient={moveIngredient} 
+                                          key={item && item.uuid}/>
+              )
           })}
         </ul>
         <li className={`${styles.bun} pr-4`}>

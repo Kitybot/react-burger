@@ -1,24 +1,41 @@
 import styles from './order-In-Short.module.css';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { useMemo } from 'react';
+import { useSelector } from '../../utils/hooks';
+import { useMemo, FC } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useRouteMatch, useLocation } from 'react-router-dom';
 import { timeString, countingPrice, getOrderStatus } from '../../utils/utils';
+import { TOrder } from '../../utils/types';
 
-function OrderInShort({ status, 
-                        numberOrder, 
-                        orderTime, 
-                        burgerName, 
-                        idIngredients, 
-                        currentDate, 
-                        orders }) {
+interface IOrderInShort {
+  status?: string;
+  numberOrder: number;
+  orderTime: string;
+  burgerName: string;
+  idIngredients: Array<string>;
+  currentDate: Date;
+  orders: TOrder[];
+}
+
+const OrderInShort: FC<IOrderInShort> = ({  status, 
+                                            numberOrder, 
+                                            orderTime, 
+                                            burgerName, 
+                                            idIngredients, 
+                                            currentDate, 
+                                            orders }) => {
   const ingredients = useSelector(state => state.burgerIngredients);
   const location = useLocation();
 
   const time = timeString(orderTime, currentDate);
 
-  function makeIngredientIcon(index, image, name, uuid, previousValue) {
+  function makeIngredientIcon( index: number,
+    image: string, 
+    name: string, 
+    uuid: string, 
+    previousValue: {
+     burgerPrice: number;
+     burgerIngredients: JSX.Element[];
+   }) {
     if (index <= 5) {
       const zIndex = idIngredients.length - index;
       const moreMaximum = index === 5 ? idIngredients.length - 6 : false;
@@ -43,17 +60,21 @@ function OrderInShort({ status,
     }
   }
   const {burgerPrice, burgerIngredients} = useMemo(() => {
-    const iconsAndPrice = ingredients ? idIngredients.reduce((previousValue, item, index) => {
+    const iconsAndPrice = ingredients ? idIngredients.reduce((
+      previousValue: {burgerPrice: number, burgerIngredients: JSX.Element[]}, 
+      item, 
+      index
+    ) => {
       const ingredient = ingredients.find((i) => {
         return item === i._id
       })
       if (ingredient) {
-      countingPrice(ingredient.type, ingredient.price, previousValue);
-      makeIngredientIcon( index, 
-                          ingredient.image, 
-                          ingredient.name,
-                          ingredient.uuid,
-                          previousValue);
+        countingPrice(ingredient.type, ingredient.price, previousValue);
+        makeIngredientIcon( index, 
+                            ingredient.image, 
+                            ingredient.name,
+                            ingredient.uuid,
+                            previousValue);
       }
       return previousValue;
     }, {burgerPrice: 0, burgerIngredients: []}) : {burgerPrice: 0, burgerIngredients: []};
@@ -95,25 +116,14 @@ function OrderInShort({ status,
         <div className={styles.ingredientsCotnainer}>
           {burgerIngredients}
         </div>
-        <div className={`pl-5 ${styles.priceContainer}`} 
-          style={{zIndex: ingredients && idIngredients.length}}>
+        {ingredients && (<div className={`pl-5 ${styles.priceContainer}`} 
+          style={{zIndex: idIngredients.length}}>
           <span className='text text_type_digits-default mr-2'>{burgerPrice}</span>
           <CurrencyIcon type="primary"/>
-        </div>
+        </div>)}
       </div>
     </Link>
   )
 }
-
-OrderInShort.defaultProps = {status: ''};
-
-OrderInShort.propTypes = {
-  status: PropTypes.string,
-  numberOrder: PropTypes.number.isRequired,
-  orderTime: PropTypes.string.isRequired,
-  burgerName: PropTypes.string.isRequired,
-  idIngredients: PropTypes.arrayOf(PropTypes.string).isRequired,
-  currentDate: PropTypes.object.isRequired,
-};
 
 export default OrderInShort;

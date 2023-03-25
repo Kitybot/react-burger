@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import styles from './app.module.css';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import AppHeader from '../app-header/app-header';
@@ -20,9 +20,10 @@ import FeedOrderInfo from '../../pages/feed-Order-Info';
 import OwnOrderInfo from '../../pages/own-OrderInfo';
 import OrderInfo from '../order-Info/order-Info';
 import { getIngredients } from '../../services/actions/burger-ingredient';
+import { TIgredient, TLocation, TLocationWithState } from '../../utils/types';
 
 const App = () => {
-  const burgerIngredients = useSelector(state => state.burgerIngredients);
+  const burgerIngredients: null | Array<TIgredient> = useSelector(state => state.burgerIngredients);
   const dispatch = useDispatch();
   useEffect(() => {
     if (!burgerIngredients) {
@@ -30,7 +31,7 @@ const App = () => {
     }
   }, []);
 
-  const location = useLocation();
+  const location: TLocation | TLocationWithState = useLocation();
   const background = location.state && location.state.background;
   const ingredient = location.state && location.state.ingredient;
   const orders = location.state && location.state.orders;
@@ -76,20 +77,20 @@ const App = () => {
         {background && (
                           <Switch>
                             <Route path='/ingredients/:id'>
-                              <Modal activeModal='ingredientDetails'>
+                            {ingredient && <Modal activeModal='ingredientDetails'>
                                 <IngredientDetails 
                                   ingredient={ingredient}
                                   modal={true}/>
-                              </Modal>
+                              </Modal>}
                             </Route>
                             <Route  path='/feed/:id'
-                                    render={ () => (<Modal activeModal='orders'>
+                                    render={ () => (orders && <Modal activeModal='orders'>
                                                       <OrderInfo
                                                         orders={orders}
                                                         modal={true}/>
                                                     </Modal>)} />
                             <Route  path='/profile/orders/:id'
-                                    render={ () => (<Modal activeModal='orders'>
+                                    render={ () => (orders && <Modal activeModal='orders'>
                                                       <OrderInfo
                                                         orders={orders}
                                                         modal={true}/>

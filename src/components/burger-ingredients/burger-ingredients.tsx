@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 import styles from './burger-ingredients.module.css';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import TypeIngredient from '../type-ingredient/type-ingredient';
@@ -7,24 +7,24 @@ import TypeIngredient from '../type-ingredient/type-ingredient';
 
 function BurgerIngredients () {
 
-  const listsIngredients = useRef(null);
-  const listBuns = useRef(null);
-  const listSauces = useRef(null);
-  const listMains = useRef(null);
+  const listsIngredients = useRef<HTMLUListElement>(null);
+  const listBuns = useRef<HTMLLIElement>(null);
+  const listSauces = useRef<HTMLLIElement>(null);
+  const listMains = useRef<HTMLLIElement>(null);
 
   const ingredients = useSelector(state => state.burgerIngredients);
 
-  const [current, setCurrent] = React.useState('bun');
+  const [current, setCurrent] = React.useState<string>('bun');
 
-  const handleScroll = () => {
-    const positionListsIngredients = listsIngredients.current.getBoundingClientRect().top;
-    const positionListSauces = listSauces.current.getBoundingClientRect().top;
-    const positionListMains = listMains.current.getBoundingClientRect().top;
+  const handleScroll = (): void => {
+    const positionListsIngredients = listsIngredients.current && listsIngredients.current.getBoundingClientRect().top;
+    const positionListSauces = listSauces.current && listSauces.current.getBoundingClientRect().top;
+    const positionListMains = listMains.current && listMains.current.getBoundingClientRect().top;
     const relativeСoordinates = {
-      sauces: (positionListSauces - positionListsIngredients) < 70 ? true : false,
-      mains: (positionListMains - positionListsIngredients) < 70 ? true : false,
+      sauces: ((positionListSauces ? positionListSauces : 0) - (positionListsIngredients ? positionListsIngredients :0)) < 70 ? true : false,
+      mains: ((positionListMains ? positionListMains : 0) - (positionListsIngredients ? positionListsIngredients :0)) < 70 ? true : false,
     };
-    const currentList = () => {
+    const currentList = (): string => {
       if (!relativeСoordinates.sauces) {
         return 'bun';
       } else if (!relativeСoordinates.mains){
@@ -33,9 +33,7 @@ function BurgerIngredients () {
         return 'main';
       }
     }
-    if (current !== currentList) {
-      setCurrent(currentList);
-    }
+    setCurrent(currentList);
   };
   
   return(

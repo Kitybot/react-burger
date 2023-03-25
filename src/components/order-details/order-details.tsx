@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import { useHistory } from 'react-router-dom';
 import styles from './order-details.module.css';
 import {CheckMarkIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import { sendOrder } from '../../services/actions/order-detalis';
 import { getAccessTokenOutCookie } from '../../utils/utils';
-import { requestWithAccessToken, getUser } from '../../services/actions/user';
-import PropTypes from 'prop-types';
+import { getUser, updateTokens } from '../../services/actions/user';
+import { TAllActions } from '../../services/actions/unionIfActions';
+import { ThunkAction } from 'redux-thunk';
+import { Action } from 'redux';
+import { TRootState } from '../../utils/types';
 
-function OrderDetails({closeModalWithDispatch}) {
+interface IOrderDetailsProps {
+  closeModalWithDispatch: (saveBurger?: boolean) => 
+    TAllActions | ThunkAction<void, Action<any>, TRootState, TAllActions>
+}
+
+function OrderDetails({closeModalWithDispatch}: IOrderDetailsProps) {
 
   const { constructorIngredients,
           orderDetails,
@@ -27,19 +35,27 @@ function OrderDetails({closeModalWithDispatch}) {
                                           });
 
   useEffect(() => {
-    new Promise((resolve, reject) => {
+    new Promise<void>((resolve, reject) => {
       if (userName === '' || userEmail === '') {
         setRequest({isActive: true, message: 'Запрашиваем информацию о пользователе...'});
         const accessToken = getAccessTokenOutCookie();
         const refreshToken = localStorage.getItem('refreshToken');
         if (accessToken && refreshToken) {
-          new Promise ((resolve, reject) => {
-            requestWithAccessToken( dispatch, 
-                                    getUser, 
-                                    accessToken, 
-                                    refreshToken, 
-                                    {resolve, reject})
+          new Promise<void> ((resolve, reject) => {
+            getUser(dispatch, accessToken)
+            .then(() => resolve())
+            .catch( () => {
+              updateTokens(dispatch, refreshToken)
+                .then((newAccessToken) => {
+                  if (newAccessToken) {
+                    getUser(dispatch, newAccessToken);
+                  }
+                  resolve();
+                }
+                )
+                .catch(() => reject());
           })
+        })
           .then(() => {
             resolve();
           })
@@ -90,10 +106,6 @@ function OrderDetails({closeModalWithDispatch}) {
       </>)
     
   )
-}
-
-OrderDetails.propTypes = {
-  closeModalWithDispatch: PropTypes.func,
 }
 
 export default OrderDetails;

@@ -1,20 +1,22 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import styles from '../ingredient-detalis/ingredient-detalis.module.css';
 import { useLocation } from 'react-router-dom';
-import { ingredientType } from '../../utils/types';
-import PropTypes from 'prop-types';
+import { TIgredient } from '../../utils/types';
 
-function IngredientDetails({ingredient, modal}) {
+interface IIngredientDetailsProps {
+  ingredient: TIgredient;
+  modal?: boolean
+}
+
+function IngredientDetails({ingredient, modal}: IIngredientDetailsProps) {
   const location = useLocation();
-  const ingredientInStore = useSelector( state => state.ingredientDetails);
   const {image_large, 
          name, 
          calories, 
          proteins, 
          fat, 
-         carbohydrates} = ingredient ? ingredient : ingredientInStore;
-         window.history.replaceState(null, null, location.pathname);
+         carbohydrates} = ingredient;
+         window.history.replaceState(null, '', location.pathname);
 
   return(
     <>
@@ -64,11 +66,5 @@ function IngredientDetails({ingredient, modal}) {
     </>
   )
 }
-IngredientDetails.defaultProps = {ingredient: null};
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientType,
-  modal: PropTypes.bool
-};
 
 export default IngredientDetails;

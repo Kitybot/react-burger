@@ -1,9 +1,18 @@
-import React from "react";
+import React, { FC } from "react";
 import { Link } from 'react-router-dom';
 import styles from './link-header.module.css';
-import PropTypes from 'prop-types';
+import { IAppHeaderState } from '../app-header/app-header';
 
-function LinkHeader(props) {
+interface ILinkHeader {
+  children: string;
+  textColor: string;
+  icon: JSX.Element;
+  state: IAppHeaderState;
+  changeIsHover: (newState: IAppHeaderState) => void;
+  to: string;
+}
+
+const LinkHeader: FC<ILinkHeader> = (props) => {
   const changeIsHoverTrue = () => {
     props.changeIsHover({
       ...props.state,
@@ -31,15 +40,6 @@ function LinkHeader(props) {
       </p>
     </Link>
   )
-}
-
-LinkHeader.propTypes = {
-  children: PropTypes.string.isRequired,
-  textColor: PropTypes.string.isRequired,
-  icon: PropTypes.element.isRequired,
-  state: PropTypes.object.isRequired,
-  changeIsHover: PropTypes.func.isRequired,
-  to: PropTypes.string.isRequired,
 }
 
 export default LinkHeader;

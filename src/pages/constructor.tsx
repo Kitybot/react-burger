@@ -34,9 +34,9 @@ export default function Constructor() {
       </DndProvider>
       {isModalActive !== '' && (
         <Modal closeModalWithDispatch={closeModalWithDispatch} activeModal={isModalActive}>
-          isModalActive === 'orderDetails' ? 
+          {isModalActive === 'orderDetails' ? 
             ( <OrderDetails closeModalWithDispatch={closeModalWithDispatch}/> ) :
-          {isModalActive === 'error' && (<ErrorMessage message={message}/>)}
+            isModalActive === 'error' && (<ErrorMessage message={message}/>)}
         </Modal>
       )}
     </main>

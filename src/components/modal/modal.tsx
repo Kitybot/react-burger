@@ -1,25 +1,35 @@
-import React from "react";
+import React, { FC }from "react";
 import ReactDOM from "react-dom";
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from "prop-types";
 import { useHistory } from 'react-router-dom';
+import { TAllActions } from '../../services/actions/unionIfActions';
+import { ThunkAction } from 'redux-thunk';
+import { Action } from 'redux';
+import { TRootState } from '../../utils/types';
 
-function Modal({children, activeModal, closeModalWithDispatch}) {
+interface IModal {
+  children?: JSX.Element | boolean;
+  activeModal: string;
+  closeModalWithDispatch?: (saveBurger?: boolean) => 
+    TAllActions | ThunkAction<void, Action<any>, TRootState, TAllActions>;
+}
+
+const Modal: FC<IModal> = ({children, activeModal, closeModalWithDispatch}) => {
   const history = useHistory();
 
   function closeModal() {
     closeModalWithDispatch ? closeModalWithDispatch() : history.goBack();
   } 
 
-  const closeModalClickOverlay = (e) => {
-    if (e.target.id === 'overlay') {
+  const closeModalClickOverlay = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.currentTarget.id === 'overlay' && e.currentTarget === e.target) {
       closeModal();
     };
   }
 
-  const closeModalEsc = (e) => {
+  const closeModalEsc = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       closeModal();
     };
@@ -33,7 +43,9 @@ function Modal({children, activeModal, closeModalWithDispatch}) {
       };
     },[]);
 
-  return ReactDOM.createPortal(
+    const element = document.getElementById('react-modals');
+
+    return element && ReactDOM.createPortal(
     ( <ModalOverlay closeModalClickOverlay={closeModalClickOverlay}>
         <div className={` pl-10 pr-10 ${activeModal === 'orders' ? 'pt-15 pb-10' :'pt-10 pb-15'} 
                           ${styles.modal} 
@@ -48,14 +60,7 @@ function Modal({children, activeModal, closeModalWithDispatch}) {
           {children}
         </div>
       </ModalOverlay>),
-    document.getElementById('react-modals')
+    element
   );
 }
-
-Modal.propTypes = {
-  children: PropTypes.node,
-  activeModal: PropTypes.string,
-  closeModalWithDispatch: PropTypes.func,
-}
-
 export default Modal;

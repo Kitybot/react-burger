@@ -1,14 +1,21 @@
 import styles from './edit-Profile.module.css';
 import './edit-Profile.css';
-import { useState, useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from '../../utils/hooks';
 import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { requestAboutUser,  requestWithAccessToken } from '../../services/actions/user';
 import { getAccessTokenOutCookie } from '../../utils/utils';
-import PropTypes from 'prop-types';
+import { requestAboutUser, updateTokens } from '../../services/actions/user';
 import { useHistory } from 'react-router-dom';
+import { TIsRequestSuccessful } from '../../utils/types';
 
-function EditProfile ({setIsRequestSuccessful}) {
+interface IEditProfileProps {
+  setIsRequestSuccessful : React.Dispatch<React.SetStateAction<TIsRequestSuccessful>>
+}
+interface IIsDisabledInState {
+  disabled?: boolean
+}
+
+function EditProfile ({setIsRequestSuccessful}: IEditProfileProps) {
   const { userName, userEmail } = useSelector(state => ({
     userName: state.user.userName,
     userEmail: state.user.email,
@@ -16,11 +23,12 @@ function EditProfile ({setIsRequestSuccessful}) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [ nameValue, setNameValue] = useState(userName);
-  const [ isInputNameActive, setIsInputNameActive ] = useState({disabled: true});
-  const [ isErrorInName, setIsErrorInName ] = useState(false);
-  const nameRef = useRef();
-  const changeNameValue = (e) => {
+  const [ nameValue, setNameValue] = useState<string>(userName);
+  const [ isInputNameActive, setIsInputNameActive ] = 
+    useState<IIsDisabledInState>({disabled: true});
+  const [ isErrorInName, setIsErrorInName ] = useState<boolean>(false);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const changeNameValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setNameValue(value);
     if (value.length < 2 && isErrorInName === false) {
@@ -32,44 +40,46 @@ function EditProfile ({setIsRequestSuccessful}) {
   };
   const onIconClickName = async() => {
     await setIsInputNameActive({});
-    nameRef.current.focus();
+    nameRef.current && nameRef.current.focus();
   };
   const onBlurName = () => {
     setIsInputNameActive({disabled: true});
   };
 
 
-  const [valueEmail, setValueEmail] = useState(userEmail);
-  const [ isErrorInEmail, setIsErrorInEmail ] = useState(false);
+  const [valueEmail, setValueEmail] = useState<string>(userEmail);
+  const [ isErrorInEmail, setIsErrorInEmail ] = useState<boolean>(false);
+  const formEditProfile = useRef<HTMLFormElement>(null);
   useEffect(() => {
-    const emailInput = document.forms.editProfil.elements.email;
-    const divEmail = emailInput.closest('.input');
+    const divEmail = formEditProfile.current && formEditProfile.current.querySelector('.input_type_email');
+    const emailInput = divEmail && divEmail.querySelector('.input__textfield');
     const serchErrorClassEmail = () => {
       setTimeout(() => {
-        if (divEmail.classList.contains('input_status_error')) {
+        if (divEmail && divEmail.classList.contains('input_status_error')) {
           setIsErrorInEmail(true);
         }
-        if (!divEmail.classList.contains('input_status_error') && isErrorInEmail) {
+        if (divEmail && !divEmail.classList.contains('input_status_error') && isErrorInEmail) {
           setIsErrorInEmail(false);
         }
       }, 50);
     }
-    emailInput.addEventListener('blur', serchErrorClassEmail);
-    emailInput.addEventListener('focus', (() => {setIsErrorInEmail(false)}));
+    emailInput && emailInput.addEventListener('blur', serchErrorClassEmail);
+    emailInput && emailInput.addEventListener('focus', (() => {setIsErrorInEmail(false)}));
     return () => {
-      emailInput.removeEventListener('blur', serchErrorClassEmail);
-      emailInput.removeEventListener('focus', (() => {setIsErrorInEmail(false)}));
+      emailInput && emailInput.removeEventListener('blur', serchErrorClassEmail);
+      emailInput && emailInput.removeEventListener('focus', (() => {setIsErrorInEmail(false)}));
     }
   }, []);
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValueEmail(e.target.value);
   }
 
-  const [valuePassword, setValuePassword] = useState('123456');
-  const [ isInputPasswordActive, setIsInputPasswordActive ] = useState({disabled: true});
-  const [ isErrorInPassword, setIsErrorInPassword ] = useState(false);
-  const passwordRef = useRef();
-  const changePasswordValue = (e) => {
+  const [valuePassword, setValuePassword] = useState<string>('123456');
+  const [ isInputPasswordActive, setIsInputPasswordActive ] = 
+    useState<IIsDisabledInState>({disabled: true});
+  const [ isErrorInPassword, setIsErrorInPassword ] = useState<boolean>(false);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const changePasswordValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     setValuePassword(value);
     if (value.length < 6 && isErrorInPassword === false) {
@@ -81,7 +91,7 @@ function EditProfile ({setIsRequestSuccessful}) {
   };
   const onIconClickPassword = async() => {
     await setIsInputPasswordActive({});
-    passwordRef.current.focus();
+    passwordRef.current && passwordRef.current.focus();
     setValuePassword('');
     setIsErrorInPassword(true);
   };
@@ -90,7 +100,7 @@ function EditProfile ({setIsRequestSuccessful}) {
   };
 
   
-  const [isErrorInForm, setIsErrorInForm ] = useState({});
+  const [isErrorInForm, setIsErrorInForm ] = useState<IIsDisabledInState>({});
   useEffect(() => {
     if ((isErrorInName || isErrorInPassword || isErrorInEmail)) {
       setIsErrorInForm({ disabled: true });
@@ -100,14 +110,14 @@ function EditProfile ({setIsRequestSuccessful}) {
   }, [isErrorInName, isErrorInPassword, isErrorInEmail]);
 
 
-  const [ isProfileEdit, setIsProfileEdit ] = useState(false);
+  const [ isProfileEdit, setIsProfileEdit ] = useState<boolean>(false);
   useEffect(() => {
     if (valueEmail !== userEmail || valuePassword !== '123456' || nameValue !== userName) {
       setIsProfileEdit(true);
     }
   }, [valueEmail, valuePassword, nameValue]);
 
-  const clickСancel = (e) => {
+  const clickСancel = (e: React.SyntheticEvent<Element>) => {
     e.preventDefault();
     setValuePassword('123456');
     setNameValue(userName);
@@ -118,12 +128,12 @@ function EditProfile ({setIsRequestSuccessful}) {
     setIsProfileEdit(false);
   }
 
-  const saveNewUserData = (e) => {
+  const saveNewUserData = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsRequestSuccessful({value: false, message: 'Сохраняем изменения...'})
     const accessToken = getAccessTokenOutCookie();
     const refreshToken = localStorage.getItem('refreshToken');
-    const saveUserData = (dispatch, token) => {
+    const saveUserData = (token:string) => {
       const request = new Promise ((resolve, reject) => {
         dispatch(requestAboutUser({
           requestOptions: {
@@ -145,16 +155,26 @@ function EditProfile ({setIsRequestSuccessful}) {
       });
       return request;
     };
-    new Promise ((resolve, reject) => {
-      requestWithAccessToken( dispatch, 
-                              saveUserData, 
-                              accessToken, 
-                              refreshToken, 
-                              {resolve, reject})
+    new Promise<void> ((resolve, reject) => {
+      saveUserData(accessToken)
+      .then(() => resolve())
+      .catch( () => {
+          updateTokens(dispatch, refreshToken)
+            .then((newAccessToken) => {
+              if (newAccessToken) {
+                saveUserData(newAccessToken);
+              }
+              resolve();
+            }
+            )
+            .catch(() => reject());
+      })
     })
       .then(() => {
+        console.log('resolve');
         setIsRequestSuccessful({value: true, message: ''});
         setIsProfileEdit(false);
+        console.log('setIsProfileEdit', isProfileEdit)
       })
       .catch(() => {
         history.push({pathname: '/login'});
@@ -166,7 +186,8 @@ function EditProfile ({setIsRequestSuccessful}) {
       <form name='editProfil' 
             id='editProfil' 
             className={`pt-30 pl-3 ${styles.editProfileForm}`}
-            onSubmit={saveNewUserData}>
+            onSubmit={saveNewUserData}
+            ref={formEditProfile}>
         <Input 
           name='name' 
           type='text' 
@@ -200,13 +221,15 @@ function EditProfile ({setIsRequestSuccessful}) {
         {isProfileEdit && (<div className={styles.buttonsContainer}>
           <Button type='secondary' 
                   size='medium'
-                  onClick={clickСancel}>
+                  onClick={clickСancel}
+                  htmlType='button'>
             Отмена
           </Button>
           <Button type='primary' 
                   size='medium' 
                   id='save'
-                  {...isErrorInForm}>
+                  {...isErrorInForm}
+                  htmlType='submit'>
             Сохранить
           </Button>
         </div>)}
@@ -215,8 +238,5 @@ function EditProfile ({setIsRequestSuccessful}) {
   )
 }
 
-EditProfile.propTypes = {
-  setIsRequestSuccessful: PropTypes.func
-};
 
 export default EditProfile;

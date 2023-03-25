@@ -1,11 +1,11 @@
 import { Route, useHistory, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { useLayoutEffect, useState } from 'react';
+import { useSelector, useDispatch } from '../../utils/hooks';
+import { useLayoutEffect, useState, FC } from 'react';
 import { getAccessTokenOutCookie } from '../../utils/utils';
-import { requestWithAccessToken, getUser } from '../../services/actions/user';
+import { getUser, updateTokens } from '../../services/actions/user';
+import { IRoute } from '../../utils/types';
 
-function RouteNotAuthorized({children, ...optionsRoute}) {
+const RouteNotAuthorized: FC<IRoute> = ({children, ...optionsRoute}) =>{
   const {userName, userEmail} = useSelector(state => ({
     userName: state.user.userName, 
     userEmail: state.user.email,
@@ -23,12 +23,20 @@ function RouteNotAuthorized({children, ...optionsRoute}) {
         const accessToken = getAccessTokenOutCookie();
         const refreshToken = localStorage.getItem('refreshToken');
         if (accessToken && refreshToken) {
-          new Promise ((resolve, reject) => {
-            requestWithAccessToken( dispatch, 
-                                    getUser, 
-                                    accessToken, 
-                                    refreshToken, 
-                                    {resolve, reject})
+          new Promise<void> ((resolve, reject) => {
+            getUser(dispatch, accessToken)
+            .then(() => resolve())
+            .catch( () => {
+              updateTokens(dispatch, refreshToken)
+                .then((newAccessToken) => {
+                  if (newAccessToken) {
+                    getUser(dispatch, newAccessToken);
+                  }
+                  resolve();
+                }
+                )
+                .catch(() => reject());
+            })
           })
           .then(() => {
             setIsRequest(false)
@@ -56,11 +64,6 @@ function RouteNotAuthorized({children, ...optionsRoute}) {
                     children}
     />
   )
-}
-
-RouteNotAuthorized.propTypes = {
-  children: PropTypes.element,
-  path: PropTypes.string
 }
 
 export default RouteNotAuthorized;
