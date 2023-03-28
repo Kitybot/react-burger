@@ -89,7 +89,7 @@ export const timeString = (orderTime: string, currentDate: Date) => {
 
 export function countingPrice(type: string,
                               price: number,
-                              previousValue: {  burgerPrice: any; 
+                              previousValue: {  burgerPrice: number; 
                                 burgerIngredients?: JSX.Element[]; 
                                 liste?: JSX.Element[]; }) {
   if (type === "bun") {
